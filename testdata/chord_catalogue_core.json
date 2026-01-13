@@ -1,0 +1,1131 @@
+{
+  "schema": "chord-symbol-catalogue/v1",
+  "count": 375,
+  "chords": [
+    {
+      "symbol": "A"
+    },
+    {
+      "symbol": "A#"
+    },
+    {
+      "symbol": "A#11"
+    },
+    {
+      "symbol": "A#13"
+    },
+    {
+      "symbol": "A#5"
+    },
+    {
+      "symbol": "A#6"
+    },
+    {
+      "symbol": "A#7"
+    },
+    {
+      "symbol": "A#9"
+    },
+    {
+      "symbol": "A#add9"
+    },
+    {
+      "symbol": "A#aug"
+    },
+    {
+      "symbol": "A#dim"
+    },
+    {
+      "symbol": "A#dim7"
+    },
+    {
+      "symbol": "A#m"
+    },
+    {
+      "symbol": "A#m11"
+    },
+    {
+      "symbol": "A#m6"
+    },
+    {
+      "symbol": "A#m7"
+    },
+    {
+      "symbol": "A#m7-5"
+    },
+    {
+      "symbol": "A#m9"
+    },
+    {
+      "symbol": "A#maj7"
+    },
+    {
+      "symbol": "A#maj9"
+    },
+    {
+      "symbol": "A#mmaj7"
+    },
+    {
+      "symbol": "A#sus2"
+    },
+    {
+      "symbol": "A#sus4"
+    },
+    {
+      "symbol": "A11"
+    },
+    {
+      "symbol": "A13"
+    },
+    {
+      "symbol": "A5"
+    },
+    {
+      "symbol": "A6"
+    },
+    {
+      "symbol": "A7"
+    },
+    {
+      "symbol": "A9"
+    },
+    {
+      "symbol": "Aadd9"
+    },
+    {
+      "symbol": "Aaug"
+    },
+    {
+      "symbol": "Ab"
+    },
+    {
+      "symbol": "Ab11"
+    },
+    {
+      "symbol": "Ab13"
+    },
+    {
+      "symbol": "Ab5"
+    },
+    {
+      "symbol": "Ab6"
+    },
+    {
+      "symbol": "Ab7"
+    },
+    {
+      "symbol": "Ab9"
+    },
+    {
+      "symbol": "Abadd9"
+    },
+    {
+      "symbol": "Abaug"
+    },
+    {
+      "symbol": "Abdim"
+    },
+    {
+      "symbol": "Abdim7"
+    },
+    {
+      "symbol": "Abm"
+    },
+    {
+      "symbol": "Abm11"
+    },
+    {
+      "symbol": "Abm6"
+    },
+    {
+      "symbol": "Abm7"
+    },
+    {
+      "symbol": "Abm7-5"
+    },
+    {
+      "symbol": "Abm9"
+    },
+    {
+      "symbol": "Abmaj7"
+    },
+    {
+      "symbol": "Abmaj9"
+    },
+    {
+      "symbol": "Abmmaj7"
+    },
+    {
+      "symbol": "Absus2"
+    },
+    {
+      "symbol": "Absus4"
+    },
+    {
+      "symbol": "Adim"
+    },
+    {
+      "symbol": "Adim7"
+    },
+    {
+      "symbol": "Am"
+    },
+    {
+      "symbol": "Am11"
+    },
+    {
+      "symbol": "Am6"
+    },
+    {
+      "symbol": "Am7"
+    },
+    {
+      "symbol": "Am7-5"
+    },
+    {
+      "symbol": "Am9"
+    },
+    {
+      "symbol": "Amaj7"
+    },
+    {
+      "symbol": "Amaj9"
+    },
+    {
+      "symbol": "Ammaj7"
+    },
+    {
+      "symbol": "Asus2"
+    },
+    {
+      "symbol": "Asus4"
+    },
+    {
+      "symbol": "B"
+    },
+    {
+      "symbol": "B11"
+    },
+    {
+      "symbol": "B13"
+    },
+    {
+      "symbol": "B5"
+    },
+    {
+      "symbol": "B6"
+    },
+    {
+      "symbol": "B7"
+    },
+    {
+      "symbol": "B9"
+    },
+    {
+      "symbol": "Badd9"
+    },
+    {
+      "symbol": "Baug"
+    },
+    {
+      "symbol": "Bb"
+    },
+    {
+      "symbol": "Bb11"
+    },
+    {
+      "symbol": "Bb13"
+    },
+    {
+      "symbol": "Bb5"
+    },
+    {
+      "symbol": "Bb6"
+    },
+    {
+      "symbol": "Bb7"
+    },
+    {
+      "symbol": "Bb9"
+    },
+    {
+      "symbol": "Bbadd9"
+    },
+    {
+      "symbol": "Bbaug"
+    },
+    {
+      "symbol": "Bbdim"
+    },
+    {
+      "symbol": "Bbdim7"
+    },
+    {
+      "symbol": "Bbm"
+    },
+    {
+      "symbol": "Bbm11"
+    },
+    {
+      "symbol": "Bbm6"
+    },
+    {
+      "symbol": "Bbm7"
+    },
+    {
+      "symbol": "Bbm7-5"
+    },
+    {
+      "symbol": "Bbm9"
+    },
+    {
+      "symbol": "Bbmaj7"
+    },
+    {
+      "symbol": "Bbmaj9"
+    },
+    {
+      "symbol": "Bbmmaj7"
+    },
+    {
+      "symbol": "Bbsus2"
+    },
+    {
+      "symbol": "Bbsus4"
+    },
+    {
+      "symbol": "Bdim"
+    },
+    {
+      "symbol": "Bdim7"
+    },
+    {
+      "symbol": "Bm"
+    },
+    {
+      "symbol": "Bm11"
+    },
+    {
+      "symbol": "Bm6"
+    },
+    {
+      "symbol": "Bm7"
+    },
+    {
+      "symbol": "Bm7-5"
+    },
+    {
+      "symbol": "Bm9"
+    },
+    {
+      "symbol": "Bmaj7"
+    },
+    {
+      "symbol": "Bmaj9"
+    },
+    {
+      "symbol": "Bmmaj7"
+    },
+    {
+      "symbol": "Bsus2"
+    },
+    {
+      "symbol": "Bsus4"
+    },
+    {
+      "symbol": "C"
+    },
+    {
+      "symbol": "C#"
+    },
+    {
+      "symbol": "C#11"
+    },
+    {
+      "symbol": "C#13"
+    },
+    {
+      "symbol": "C#5"
+    },
+    {
+      "symbol": "C#6"
+    },
+    {
+      "symbol": "C#7"
+    },
+    {
+      "symbol": "C#9"
+    },
+    {
+      "symbol": "C#add9"
+    },
+    {
+      "symbol": "C#aug"
+    },
+    {
+      "symbol": "C#dim"
+    },
+    {
+      "symbol": "C#dim7"
+    },
+    {
+      "symbol": "C#m"
+    },
+    {
+      "symbol": "C#m11"
+    },
+    {
+      "symbol": "C#m6"
+    },
+    {
+      "symbol": "C#m7"
+    },
+    {
+      "symbol": "C#m7-5"
+    },
+    {
+      "symbol": "C#m9"
+    },
+    {
+      "symbol": "C#maj7"
+    },
+    {
+      "symbol": "C#maj9"
+    },
+    {
+      "symbol": "C#mmaj7"
+    },
+    {
+      "symbol": "C#sus2"
+    },
+    {
+      "symbol": "C#sus4"
+    },
+    {
+      "symbol": "C11"
+    },
+    {
+      "symbol": "C13"
+    },
+    {
+      "symbol": "C5"
+    },
+    {
+      "symbol": "C6"
+    },
+    {
+      "symbol": "C7"
+    },
+    {
+      "symbol": "C9"
+    },
+    {
+      "symbol": "Cadd9"
+    },
+    {
+      "symbol": "Caug"
+    },
+    {
+      "symbol": "Cdim"
+    },
+    {
+      "symbol": "Cdim7"
+    },
+    {
+      "symbol": "Cm"
+    },
+    {
+      "symbol": "Cm11"
+    },
+    {
+      "symbol": "Cm6"
+    },
+    {
+      "symbol": "Cm7"
+    },
+    {
+      "symbol": "Cm7-5"
+    },
+    {
+      "symbol": "Cm9"
+    },
+    {
+      "symbol": "Cmaj7"
+    },
+    {
+      "symbol": "Cmaj9"
+    },
+    {
+      "symbol": "Cmmaj7"
+    },
+    {
+      "symbol": "Csus2"
+    },
+    {
+      "symbol": "Csus4"
+    },
+    {
+      "symbol": "D"
+    },
+    {
+      "symbol": "D#"
+    },
+    {
+      "symbol": "D#11"
+    },
+    {
+      "symbol": "D#13"
+    },
+    {
+      "symbol": "D#5"
+    },
+    {
+      "symbol": "D#6"
+    },
+    {
+      "symbol": "D#7"
+    },
+    {
+      "symbol": "D#9"
+    },
+    {
+      "symbol": "D#add9"
+    },
+    {
+      "symbol": "D#aug"
+    },
+    {
+      "symbol": "D#dim"
+    },
+    {
+      "symbol": "D#dim7"
+    },
+    {
+      "symbol": "D#m"
+    },
+    {
+      "symbol": "D#m11"
+    },
+    {
+      "symbol": "D#m6"
+    },
+    {
+      "symbol": "D#m7"
+    },
+    {
+      "symbol": "D#m7-5"
+    },
+    {
+      "symbol": "D#m9"
+    },
+    {
+      "symbol": "D#maj7"
+    },
+    {
+      "symbol": "D#maj9"
+    },
+    {
+      "symbol": "D#mmaj7"
+    },
+    {
+      "symbol": "D#sus2"
+    },
+    {
+      "symbol": "D#sus4"
+    },
+    {
+      "symbol": "D11"
+    },
+    {
+      "symbol": "D13"
+    },
+    {
+      "symbol": "D5"
+    },
+    {
+      "symbol": "D6"
+    },
+    {
+      "symbol": "D7"
+    },
+    {
+      "symbol": "D9"
+    },
+    {
+      "symbol": "Dadd9"
+    },
+    {
+      "symbol": "Daug"
+    },
+    {
+      "symbol": "Db"
+    },
+    {
+      "symbol": "Db11"
+    },
+    {
+      "symbol": "Db13"
+    },
+    {
+      "symbol": "Db5"
+    },
+    {
+      "symbol": "Db6"
+    },
+    {
+      "symbol": "Db7"
+    },
+    {
+      "symbol": "Db9"
+    },
+    {
+      "symbol": "Dbadd9"
+    },
+    {
+      "symbol": "Dbaug"
+    },
+    {
+      "symbol": "Dbdim"
+    },
+    {
+      "symbol": "Dbdim7"
+    },
+    {
+      "symbol": "Dbm"
+    },
+    {
+      "symbol": "Dbm11"
+    },
+    {
+      "symbol": "Dbm6"
+    },
+    {
+      "symbol": "Dbm7"
+    },
+    {
+      "symbol": "Dbm7-5"
+    },
+    {
+      "symbol": "Dbm9"
+    },
+    {
+      "symbol": "Dbmaj7"
+    },
+    {
+      "symbol": "Dbmaj9"
+    },
+    {
+      "symbol": "Dbmmaj7"
+    },
+    {
+      "symbol": "Dbsus2"
+    },
+    {
+      "symbol": "Dbsus4"
+    },
+    {
+      "symbol": "Ddim"
+    },
+    {
+      "symbol": "Ddim7"
+    },
+    {
+      "symbol": "Dm"
+    },
+    {
+      "symbol": "Dm11"
+    },
+    {
+      "symbol": "Dm6"
+    },
+    {
+      "symbol": "Dm7"
+    },
+    {
+      "symbol": "Dm7-5"
+    },
+    {
+      "symbol": "Dm9"
+    },
+    {
+      "symbol": "Dmaj7"
+    },
+    {
+      "symbol": "Dmaj9"
+    },
+    {
+      "symbol": "Dmmaj7"
+    },
+    {
+      "symbol": "Dsus2"
+    },
+    {
+      "symbol": "Dsus4"
+    },
+    {
+      "symbol": "E"
+    },
+    {
+      "symbol": "E11"
+    },
+    {
+      "symbol": "E13"
+    },
+    {
+      "symbol": "E5"
+    },
+    {
+      "symbol": "E6"
+    },
+    {
+      "symbol": "E7"
+    },
+    {
+      "symbol": "E9"
+    },
+    {
+      "symbol": "Eadd9"
+    },
+    {
+      "symbol": "Eaug"
+    },
+    {
+      "symbol": "Eb"
+    },
+    {
+      "symbol": "Eb11"
+    },
+    {
+      "symbol": "Eb13"
+    },
+    {
+      "symbol": "Eb5"
+    },
+    {
+      "symbol": "Eb6"
+    },
+    {
+      "symbol": "Eb7"
+    },
+    {
+      "symbol": "Eb9"
+    },
+    {
+      "symbol": "Ebadd9"
+    },
+    {
+      "symbol": "Ebaug"
+    },
+    {
+      "symbol": "Ebdim"
+    },
+    {
+      "symbol": "Ebdim7"
+    },
+    {
+      "symbol": "Ebm"
+    },
+    {
+      "symbol": "Ebm11"
+    },
+    {
+      "symbol": "Ebm6"
+    },
+    {
+      "symbol": "Ebm7"
+    },
+    {
+      "symbol": "Ebm7-5"
+    },
+    {
+      "symbol": "Ebm9"
+    },
+    {
+      "symbol": "Ebmaj7"
+    },
+    {
+      "symbol": "Ebmaj9"
+    },
+    {
+      "symbol": "Ebmmaj7"
+    },
+    {
+      "symbol": "Ebsus2"
+    },
+    {
+      "symbol": "Ebsus4"
+    },
+    {
+      "symbol": "Edim"
+    },
+    {
+      "symbol": "Edim7"
+    },
+    {
+      "symbol": "Em"
+    },
+    {
+      "symbol": "Em11"
+    },
+    {
+      "symbol": "Em6"
+    },
+    {
+      "symbol": "Em7"
+    },
+    {
+      "symbol": "Em7-5"
+    },
+    {
+      "symbol": "Em9"
+    },
+    {
+      "symbol": "Emaj7"
+    },
+    {
+      "symbol": "Emaj9"
+    },
+    {
+      "symbol": "Emmaj7"
+    },
+    {
+      "symbol": "Esus2"
+    },
+    {
+      "symbol": "Esus4"
+    },
+    {
+      "symbol": "F"
+    },
+    {
+      "symbol": "F#"
+    },
+    {
+      "symbol": "F#11"
+    },
+    {
+      "symbol": "F#13"
+    },
+    {
+      "symbol": "F#5"
+    },
+    {
+      "symbol": "F#6"
+    },
+    {
+      "symbol": "F#7"
+    },
+    {
+      "symbol": "F#9"
+    },
+    {
+      "symbol": "F#add9"
+    },
+    {
+      "symbol": "F#aug"
+    },
+    {
+      "symbol": "F#dim"
+    },
+    {
+      "symbol": "F#dim7"
+    },
+    {
+      "symbol": "F#m"
+    },
+    {
+      "symbol": "F#m11"
+    },
+    {
+      "symbol": "F#m6"
+    },
+    {
+      "symbol": "F#m7"
+    },
+    {
+      "symbol": "F#m7-5"
+    },
+    {
+      "symbol": "F#m9"
+    },
+    {
+      "symbol": "F#maj7"
+    },
+    {
+      "symbol": "F#maj9"
+    },
+    {
+      "symbol": "F#mmaj7"
+    },
+    {
+      "symbol": "F#sus2"
+    },
+    {
+      "symbol": "F#sus4"
+    },
+    {
+      "symbol": "F11"
+    },
+    {
+      "symbol": "F13"
+    },
+    {
+      "symbol": "F5"
+    },
+    {
+      "symbol": "F6"
+    },
+    {
+      "symbol": "F7"
+    },
+    {
+      "symbol": "F9"
+    },
+    {
+      "symbol": "Fadd9"
+    },
+    {
+      "symbol": "Faug"
+    },
+    {
+      "symbol": "Fdim"
+    },
+    {
+      "symbol": "Fdim7"
+    },
+    {
+      "symbol": "Fm"
+    },
+    {
+      "symbol": "Fm11"
+    },
+    {
+      "symbol": "Fm6"
+    },
+    {
+      "symbol": "Fm7"
+    },
+    {
+      "symbol": "Fm7-5"
+    },
+    {
+      "symbol": "Fm9"
+    },
+    {
+      "symbol": "Fmaj7"
+    },
+    {
+      "symbol": "Fmaj9"
+    },
+    {
+      "symbol": "Fmmaj7"
+    },
+    {
+      "symbol": "Fsus2"
+    },
+    {
+      "symbol": "Fsus4"
+    },
+    {
+      "symbol": "G"
+    },
+    {
+      "symbol": "G#"
+    },
+    {
+      "symbol": "G#11"
+    },
+    {
+      "symbol": "G#13"
+    },
+    {
+      "symbol": "G#5"
+    },
+    {
+      "symbol": "G#6"
+    },
+    {
+      "symbol": "G#7"
+    },
+    {
+      "symbol": "G#9"
+    },
+    {
+      "symbol": "G#add9"
+    },
+    {
+      "symbol": "G#aug"
+    },
+    {
+      "symbol": "G#dim"
+    },
+    {
+      "symbol": "G#dim7"
+    },
+    {
+      "symbol": "G#m"
+    },
+    {
+      "symbol": "G#m11"
+    },
+    {
+      "symbol": "G#m6"
+    },
+    {
+      "symbol": "G#m7"
+    },
+    {
+      "symbol": "G#m7-5"
+    },
+    {
+      "symbol": "G#m9"
+    },
+    {
+      "symbol": "G#maj7"
+    },
+    {
+      "symbol": "G#maj9"
+    },
+    {
+      "symbol": "G#mmaj7"
+    },
+    {
+      "symbol": "G#sus2"
+    },
+    {
+      "symbol": "G#sus4"
+    },
+    {
+      "symbol": "G11"
+    },
+    {
+      "symbol": "G13"
+    },
+    {
+      "symbol": "G5"
+    },
+    {
+      "symbol": "G6"
+    },
+    {
+      "symbol": "G7"
+    },
+    {
+      "symbol": "G9"
+    },
+    {
+      "symbol": "Gadd9"
+    },
+    {
+      "symbol": "Gaug"
+    },
+    {
+      "symbol": "Gb"
+    },
+    {
+      "symbol": "Gb11"
+    },
+    {
+      "symbol": "Gb13"
+    },
+    {
+      "symbol": "Gb5"
+    },
+    {
+      "symbol": "Gb6"
+    },
+    {
+      "symbol": "Gb7"
+    },
+    {
+      "symbol": "Gb9"
+    },
+    {
+      "symbol": "Gbadd9"
+    },
+    {
+      "symbol": "Gbaug"
+    },
+    {
+      "symbol": "Gbdim"
+    },
+    {
+      "symbol": "Gbdim7"
+    },
+    {
+      "symbol": "Gbm"
+    },
+    {
+      "symbol": "Gbm11"
+    },
+    {
+      "symbol": "Gbm6"
+    },
+    {
+      "symbol": "Gbm7"
+    },
+    {
+      "symbol": "Gbm7-5"
+    },
+    {
+      "symbol": "Gbm9"
+    },
+    {
+      "symbol": "Gbmaj7"
+    },
+    {
+      "symbol": "Gbmaj9"
+    },
+    {
+      "symbol": "Gbmmaj7"
+    },
+    {
+      "symbol": "Gbsus2"
+    },
+    {
+      "symbol": "Gbsus4"
+    },
+    {
+      "symbol": "Gdim"
+    },
+    {
+      "symbol": "Gdim7"
+    },
+    {
+      "symbol": "Gm"
+    },
+    {
+      "symbol": "Gm11"
+    },
+    {
+      "symbol": "Gm6"
+    },
+    {
+      "symbol": "Gm7"
+    },
+    {
+      "symbol": "Gm7-5"
+    },
+    {
+      "symbol": "Gm9"
+    },
+    {
+      "symbol": "Gmaj7"
+    },
+    {
+      "symbol": "Gmaj9"
+    },
+    {
+      "symbol": "Gmmaj7"
+    },
+    {
+      "symbol": "Gsus2"
+    },
+    {
+      "symbol": "Gsus4"
+    },
+    {
+      "symbol": "N"
+    }
+  ]
+}
