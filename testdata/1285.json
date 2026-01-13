@@ -1,0 +1,1326 @@
+{
+  "id": "1285",
+  "metadata": {
+    "title": "Upside Down",
+    "artist": "Diana Ross",
+    "chart_date": "1980-12-20",
+    "target_rank": 68,
+    "actual_rank": 68,
+    "peak_rank": 1,
+    "weeks_on_chart": 29
+  },
+  "chords": [
+    {
+      "onset": 0.0,
+      "offset": 0.348299319,
+      "chord": "N"
+    },
+    {
+      "onset": 0.348299319,
+      "offset": 1.1910238089,
+      "chord": "N"
+    },
+    {
+      "onset": 1.1910238089,
+      "offset": 1.4719319722000002,
+      "chord": "N"
+    },
+    {
+      "onset": 1.4719319722000002,
+      "offset": 2.5955646254,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 2.5955646254,
+      "offset": 3.7191972786,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 3.7191972786,
+      "offset": 4.842829931800001,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 4.842829931800001,
+      "offset": 5.966462585000002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 5.966462585,
+      "offset": 7.080102040750001,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 7.080102040750001,
+      "offset": 8.193741496500001,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 8.193741496500001,
+      "offset": 9.307380952249998,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 9.307380952249998,
+      "offset": 10.142610544062496,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 10.142610544062496,
+      "offset": 10.421020407999995,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 10.421020408,
+      "offset": 11.52677437625,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 11.52677437625,
+      "offset": 12.632528344499999,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 12.632528344499999,
+      "offset": 13.738282312749998,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 13.738282312749998,
+      "offset": 14.844036280999998,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 14.844036281,
+      "offset": 15.960821995249999,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 15.960821995249999,
+      "offset": 17.0776077095,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 17.0776077095,
+      "offset": 18.19439342375,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 18.19439342375,
+      "offset": 19.311179138,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 19.311179138,
+      "offset": 20.421462584750003,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 20.421462584750003,
+      "offset": 21.531746031500006,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 21.531746031500006,
+      "offset": 22.64202947825001,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 22.64202947825001,
+      "offset": 23.752312925000012,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 23.752312925,
+      "offset": 24.869002267249996,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 24.869002267249996,
+      "offset": 25.985691609499995,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 25.985691609499995,
+      "offset": 27.102380951749993,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 27.102380951749993,
+      "offset": 28.21907029399999,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 28.219070294,
+      "offset": 29.337976189750005,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 29.337976189750005,
+      "offset": 30.45688208550001,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 30.45688208550001,
+      "offset": 31.575787981250013,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 31.575787981250013,
+      "offset": 32.69469387700002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 32.694693877,
+      "offset": 33.814954648000004,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 33.814954648000004,
+      "offset": 34.93521541900001,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 34.93521541900001,
+      "offset": 36.055476190000014,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 36.055476190000014,
+      "offset": 36.89567176825002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 36.89567176825002,
+      "offset": 37.17573696100002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 37.175736961,
+      "offset": 37.713480725,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 37.713480725,
+      "offset": 37.982352606999996,
+      "chord": "Ab:min"
+    },
+    {
+      "onset": 37.982352606999996,
+      "offset": 38.251224488999995,
+      "chord": "Ab:min"
+    },
+    {
+      "onset": 38.251224489,
+      "offset": 40.46469387700002,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 40.46469387700002,
+      "offset": 42.678163265000045,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 42.678163265,
+      "offset": 44.87681405850001,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 44.87681405850001,
+      "offset": 47.07546485200002,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 47.075464852,
+      "offset": 49.300544217,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 49.300544217,
+      "offset": 51.525623582,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 51.525623582,
+      "offset": 53.69916855599998,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 53.69916855599998,
+      "offset": 54.78594104299997,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 54.785941043,
+      "offset": 55.898990929499995,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 55.898990929499995,
+      "offset": 57.01204081599999,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 57.01204081599999,
+      "offset": 58.12509070249998,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 58.12509070249998,
+      "offset": 59.238140588999975,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 59.238140589,
+      "offset": 60.35541383175,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 60.35541383175,
+      "offset": 61.4726870745,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 61.4726870745,
+      "offset": 62.589960317250004,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 62.589960317250004,
+      "offset": 63.707233560000006,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 63.70723356,
+      "offset": 64.80813492050001,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 64.80813492050001,
+      "offset": 65.90903628100003,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 65.90903628100003,
+      "offset": 67.00993764150004,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 67.00993764150004,
+      "offset": 68.11083900200006,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 68.110839002,
+      "offset": 69.23393424000002,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 69.23393424000002,
+      "offset": 70.35702947800004,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 70.35702947800004,
+      "offset": 71.48012471600006,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 71.48012471600006,
+      "offset": 72.32244614450008,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 72.32244614450008,
+      "offset": 72.60321995400008,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 72.603219954,
+      "offset": 73.15396825350001,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 73.15396825350001,
+      "offset": 73.42934240325002,
+      "chord": "Ab:min"
+    },
+    {
+      "onset": 73.42934240325002,
+      "offset": 73.70471655300003,
+      "chord": "Ab:min"
+    },
+    {
+      "onset": 73.704716553,
+      "offset": 75.91501133749998,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 75.91501133749998,
+      "offset": 78.12530612199996,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 78.125306122,
+      "offset": 80.33363945550003,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 80.33363945550003,
+      "offset": 82.54197278900007,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 82.541972789,
+      "offset": 84.72227891150004,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 84.72227891150004,
+      "offset": 86.90258503400008,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 86.902585034,
+      "offset": 89.06783068733338,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 89.06783068733338,
+      "offset": 90.15045351400008,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 90.150453514,
+      "offset": 91.24905328724999,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 91.24905328724999,
+      "offset": 92.34765306049998,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 92.34765306049998,
+      "offset": 93.44625283374997,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 93.44625283374997,
+      "offset": 94.54485260699995,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 94.544852607,
+      "offset": 95.66742063424999,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 95.66742063424999,
+      "offset": 96.78998866149999,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 96.78998866149999,
+      "offset": 97.91255668874999,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 97.91255668874999,
+      "offset": 99.03512471599998,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 99.035124716,
+      "offset": 100.15477891100001,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 100.15477891100001,
+      "offset": 101.27443310600002,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 101.27443310600002,
+      "offset": 102.39408730100003,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 102.39408730100003,
+      "offset": 103.51374149600004,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 103.513741496,
+      "offset": 104.63140022625001,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 104.63140022625001,
+      "offset": 105.74905895650002,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 105.74905895650002,
+      "offset": 106.86671768675004,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 106.86671768675004,
+      "offset": 107.70496173443755,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 107.70496173443755,
+      "offset": 107.98437641700005,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 107.984376417,
+      "offset": 108.54280045300001,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 108.54280045300001,
+      "offset": 108.82201247100002,
+      "chord": "Ab:min"
+    },
+    {
+      "onset": 108.82201247100002,
+      "offset": 109.10122448900003,
+      "chord": "Ab:min"
+    },
+    {
+      "onset": 109.101224489,
+      "offset": 111.2915532875,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 111.2915532875,
+      "offset": 113.48188208599998,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 113.481882086,
+      "offset": 115.66309523800004,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 115.66309523799994,
+      "offset": 117.8443083900001,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 117.84430839,
+      "offset": 120.06046485249995,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 120.06046485249995,
+      "offset": 122.2766213149999,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 122.276621315,
+      "offset": 124.43873771700004,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 124.43873771700004,
+      "offset": 125.51979591800006,
+      "chord": "Bb:min7"
+    },
+    {
+      "onset": 125.519795918,
+      "offset": 126.62908730125002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 126.62908730125002,
+      "offset": 127.73837868450005,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 127.73837868450005,
+      "offset": 128.84767006775007,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 128.84767006775007,
+      "offset": 129.9569614510001,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 129.956961451,
+      "offset": 131.07129818574998,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 131.07129818575007,
+      "offset": 132.18563492049992,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 132.18563492050012,
+      "offset": 133.29997165524986,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 133.29997165525018,
+      "offset": 134.4143083899998,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 134.41430839,
+      "offset": 135.51997732400005,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 135.51997732400005,
+      "offset": 136.6256462580001,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 136.6256462580001,
+      "offset": 137.73131519200015,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 137.73131519200015,
+      "offset": 138.8369841260002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 138.836984126,
+      "offset": 139.95414965900005,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 139.95414965900005,
+      "offset": 141.0713151920001,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 141.0713151920001,
+      "offset": 142.18848072500015,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 142.18848072500015,
+      "offset": 143.3056462580002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 143.305646258,
+      "offset": 144.42480158675002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 144.42480158675002,
+      "offset": 145.54395691550005,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 145.54395691550005,
+      "offset": 146.66311224425007,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 146.66311224425007,
+      "offset": 147.7822675730001,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 147.782267573,
+      "offset": 148.87804988599999,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 148.87804988599999,
+      "offset": 149.97383219899996,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 149.97383219899996,
+      "offset": 151.06961451199993,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 151.06961451199993,
+      "offset": 152.1653968249999,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 152.165396825,
+      "offset": 153.27713151875,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 153.27713151875,
+      "offset": 154.3888662125,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 154.3888662125,
+      "offset": 155.50060090625,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 155.50060090625,
+      "offset": 156.61233560000002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 156.6123356,
+      "offset": 157.72180272024997,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 157.72180272024997,
+      "offset": 158.83126984049994,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 158.83126984049994,
+      "offset": 159.94073696074992,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 159.94073696074992,
+      "offset": 161.0502040809999,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 161.050204081,
+      "offset": 162.17379818524995,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 162.17379818524995,
+      "offset": 163.2973922894999,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 163.2973922894999,
+      "offset": 164.42098639374984,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 164.42098639374984,
+      "offset": 165.5445804979998,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 165.544580498,
+      "offset": 166.65390022599996,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 166.65390022600005,
+      "offset": 167.7632199539999,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 167.7632199540001,
+      "offset": 168.87253968199985,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 168.87253968200017,
+      "offset": 169.9818594099998,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 169.98185941,
+      "offset": 171.10189909249996,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 171.10189909249996,
+      "offset": 172.22193877499993,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 172.22193877499993,
+      "offset": 173.3419784574999,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 173.3419784574999,
+      "offset": 174.46201813999986,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 174.46201814,
+      "offset": 175.57490362749996,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 175.57490362749996,
+      "offset": 176.68778911499993,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 176.68778911499993,
+      "offset": 177.8006746024999,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 177.8006746024999,
+      "offset": 178.91356008999986,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 178.91356009,
+      "offset": 180.03455215350002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 180.03455215350002,
+      "offset": 181.15554421700003,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 181.15554421700003,
+      "offset": 182.27653628050004,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 182.27653628050004,
+      "offset": 183.39752834400005,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 183.397528344,
+      "offset": 184.4967063485,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 184.4967063485,
+      "offset": 185.595884353,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 185.595884353,
+      "offset": 186.6950623575,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 186.6950623575,
+      "offset": 187.794240362,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 187.794240362,
+      "offset": 188.907358276,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 188.907358276,
+      "offset": 190.02047618999998,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 190.02047618999998,
+      "offset": 191.13359410399997,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 191.13359410399997,
+      "offset": 192.24671201799995,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 192.246712018,
+      "offset": 193.35293650775006,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 193.35293650775006,
+      "offset": 194.4591609975001,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 194.4591609975001,
+      "offset": 195.56538548725015,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 195.56538548725015,
+      "offset": 196.6716099770002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 196.671609977,
+      "offset": 197.7657879815,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 197.7657879815,
+      "offset": 198.85996598600002,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 198.85996598600002,
+      "offset": 199.95414399050003,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 199.95414399050003,
+      "offset": 200.77477749387504,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 200.77477749387504,
+      "offset": 201.04832199500004,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 201.048321995,
+      "offset": 202.163140589,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 202.163140589,
+      "offset": 203.27795918299998,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 203.27795918299998,
+      "offset": 204.39277777699996,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 204.39277777699996,
+      "offset": 205.50759637099995,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 205.507596371,
+      "offset": 206.63370181325004,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 206.63370181325004,
+      "offset": 207.75980725550008,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 207.75980725550008,
+      "offset": 208.88591269775011,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 208.88591269775011,
+      "offset": 210.01201814000015,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 210.01201814,
+      "offset": 211.12179138274996,
+      "chord": "Bb:maj"
+    },
+    {
+      "onset": 211.12179138274996,
+      "offset": 212.2315646254999,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 212.2315646254999,
+      "offset": 213.34133786824987,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 213.34133786824987,
+      "offset": 214.45111111099982,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 214.451111111,
+      "offset": 215.37039682525,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 215.37039682525,
+      "offset": 216.2896825395,
+      "chord": "C:maj"
+    },
+    {
+      "onset": 216.2896825395,
+      "offset": 217.20896825375002,
+      "chord": "F:maj"
+    },
+    {
+      "onset": 217.20896825375002,
+      "offset": 217.89843253943752,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 217.89843253943752,
+      "offset": 218.12825396800002,
+      "chord": "G:min7"
+    },
+    {
+      "onset": 218.128253968,
+      "offset": 222.72,
+      "chord": "N"
+    }
+  ],
+  "audio_features": {
+    "tempo": 107.866,
+    "tempo_confidence": 1.0,
+    "key": 0,
+    "key_confidence": 0.601,
+    "mode": 1,
+    "mode_confidence": 0.581,
+    "time_signature": 4,
+    "time_signature_confidence": 1.0,
+    "loudness": -11.289,
+    "duration": 222.74857,
+    "end_of_fade_in": 0.3673,
+    "start_of_fade_out": 210.86041
+  },
+  "lyrics": "I said upside down you're turning me\nYou're giving love instinctively\n'Round and 'round you're turning me\n\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\n\nInstinctively you give to me\nThe love that I need\nI cherish the moments with you\nRespectfully, I say to thee\nI'm aware that you're cheating\nWhen no one makes me feel like you do\n\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\n\nI know you got charm and appeal\nYou always play the field\nI'm crazy to think you are all mine\nAs long as the sun continues to shine\nThere's a place in my heart for you\nThat's the bottom line\n\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\n\nInstinctively you give to me\nThe love that I need\nI cherish the moments with you\nRespectfully, I say to thee\nI'm aware that you're cheating\nBut no one makes me feel like you do\n\nUpside down\nBoy, you turn me inside out\nAnd, 'round, 'round\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\n\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\nUpside down\nBoy, you turn me inside out\nAnd, 'round and 'round\n\nUpside down you're turning me\nYou're giving love instinctively\n'Round and 'round you're turning me\nI say to thee, respectfully\nUpside down you're turning me\nYou're giving love instinctively\nAround and 'round you're turning me\nI say to thee, respectfully\nI said upside down you're turning me\nYou're giving love instinctively\nAround and 'round you're turning me\nI say to thee, respectfully\nUpside down you're turning me\nYou're giving love instinctively\n'Round and 'round you're turning me\nI say to thee, respectfully\nUpside down you're turning me",
+  "synced_lyrics": [
+    {
+      "text": "I said upside down you're turning me",
+      "start": 9.011,
+      "end": 11.052
+    },
+    {
+      "text": "You're giving love instinctively",
+      "start": 11.052,
+      "end": 14.024
+    },
+    {
+      "text": "'Round and 'round you're turning me",
+      "start": 14.024,
+      "end": 19.025
+    },
+    {
+      "text": "Upside down",
+      "start": 19.025,
+      "end": 21.011
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 21.011,
+      "end": 25.005
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 25.005,
+      "end": 28.008
+    },
+    {
+      "text": "Upside down",
+      "start": 28.008,
+      "end": 30.023
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 30.023,
+      "end": 34.026
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 34.026,
+      "end": 36.035
+    },
+    {
+      "text": "Instinctively you give to me",
+      "start": 36.035,
+      "end": 39.089
+    },
+    {
+      "text": "The love that I need",
+      "start": 39.089,
+      "end": 42.022
+    },
+    {
+      "text": "I cherish the moments with you",
+      "start": 42.022,
+      "end": 46.046
+    },
+    {
+      "text": "Respectfully, I say to thee",
+      "start": 46.046,
+      "end": 48.077
+    },
+    {
+      "text": "I'm aware that you're cheating",
+      "start": 48.077,
+      "end": 51.015
+    },
+    {
+      "text": "When no one makes me feel like you do",
+      "start": 51.015,
+      "end": 54.066
+    },
+    {
+      "text": "Upside down",
+      "start": 54.066,
+      "end": 57.02
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 57.02,
+      "end": 60.087
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 60.087,
+      "end": 63.023
+    },
+    {
+      "text": "Upside down",
+      "start": 63.023,
+      "end": 66.01
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 66.01,
+      "end": 67.097
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 67.097,
+      "end": 72.005
+    },
+    {
+      "text": "I know you got charm and appeal",
+      "start": 72.005,
+      "end": 75.052
+    },
+    {
+      "text": "You always play the field",
+      "start": 75.052,
+      "end": 77.04
+    },
+    {
+      "text": "I'm crazy to think you are all mine",
+      "start": 77.04,
+      "end": 81.095
+    },
+    {
+      "text": "As long as the sun continues to shine",
+      "start": 81.095,
+      "end": 86.011
+    },
+    {
+      "text": "There's a place in my heart for you",
+      "start": 86.011,
+      "end": 87.027
+    },
+    {
+      "text": "That's the bottom line",
+      "start": 87.027,
+      "end": 89.091
+    },
+    {
+      "text": "Upside down",
+      "start": 89.091,
+      "end": 92.036
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 92.036,
+      "end": 95.078
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 95.078,
+      "end": 98.009
+    },
+    {
+      "text": "Upside down",
+      "start": 98.009,
+      "end": 100.037
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 100.037,
+      "end": 104.06
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 104.06,
+      "end": 108.053
+    },
+    {
+      "text": "Instinctively you give to me",
+      "start": 108.053,
+      "end": 110.071
+    },
+    {
+      "text": "The love that I need",
+      "start": 110.071,
+      "end": 112.081
+    },
+    {
+      "text": "I cherish the moments with you",
+      "start": 112.081,
+      "end": 117.018
+    },
+    {
+      "text": "Respectfully, I say to thee",
+      "start": 117.018,
+      "end": 119.05
+    },
+    {
+      "text": "I'm aware that you're cheating",
+      "start": 119.05,
+      "end": 121.045
+    },
+    {
+      "text": "But no one makes me feel like you do",
+      "start": 121.045,
+      "end": 125.025
+    },
+    {
+      "text": "Upside down",
+      "start": 125.025,
+      "end": 126.095
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 126.095,
+      "end": 131.065
+    },
+    {
+      "text": "And, 'round, 'round",
+      "start": 131.065,
+      "end": 134.028
+    },
+    {
+      "text": "Upside down",
+      "start": 134.028,
+      "end": 136.052
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 136.052,
+      "end": 140.032
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 140.032,
+      "end": 142.053
+    },
+    {
+      "text": "Upside down",
+      "start": 142.053,
+      "end": 145.008
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 145.008,
+      "end": 149.034
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 149.034,
+      "end": 151.031
+    },
+    {
+      "text": "Upside down",
+      "start": 151.031,
+      "end": 153.052
+    },
+    {
+      "text": "Boy, you turn me inside out",
+      "start": 153.052,
+      "end": 158.003
+    },
+    {
+      "text": "And, 'round and 'round",
+      "start": 158.003,
+      "end": 160.078
+    },
+    {
+      "text": "Upside down you're turning me",
+      "start": 160.078,
+      "end": 162.037
+    },
+    {
+      "text": "You're giving love instinctively",
+      "start": 162.037,
+      "end": 164.045
+    },
+    {
+      "text": "'Round and 'round you're turning me",
+      "start": 164.045,
+      "end": 166.059
+    },
+    {
+      "text": "I say to thee, respectfully",
+      "start": 166.059,
+      "end": 168.083
+    },
+    {
+      "text": "Upside down you're turning me",
+      "start": 168.083,
+      "end": 171.007
+    },
+    {
+      "text": "You're giving love instinctively",
+      "start": 171.007,
+      "end": 173.026
+    },
+    {
+      "text": "Around and 'round you're turning me",
+      "start": 173.026,
+      "end": 175.055
+    },
+    {
+      "text": "I say to thee, respectfully",
+      "start": 175.055,
+      "end": 177.073
+    },
+    {
+      "text": "I said upside down you're turning me",
+      "start": 177.073,
+      "end": 180.005
+    },
+    {
+      "text": "You're giving love instinctively",
+      "start": 180.005,
+      "end": 182.024
+    },
+    {
+      "text": "Around and 'round you're turning me",
+      "start": 182.024,
+      "end": 184.05
+    },
+    {
+      "text": "I say to thee, respectfully",
+      "start": 184.05,
+      "end": 187.006
+    },
+    {
+      "text": "Upside down you're turning me",
+      "start": 187.006,
+      "end": 189.017
+    },
+    {
+      "text": "You're giving love instinctively",
+      "start": 189.017,
+      "end": 190.091
+    },
+    {
+      "text": "'Round and 'round you're turning me",
+      "start": 190.091,
+      "end": 193.028
+    },
+    {
+      "text": "I say to thee, respectfully",
+      "start": 193.028,
+      "end": 194.085
+    },
+    {
+      "text": "Upside down you're turning me",
+      "start": 194.085,
+      "end": 197.061
+    }
+  ]
+}

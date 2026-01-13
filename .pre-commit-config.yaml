@@ -1,0 +1,52 @@
+repos:
+  - repo: local
+    hooks:
+      - id: typecheck
+        name: Type check
+        entry: make typecheck
+        language: system
+        pass_filenames: false
+        
+      - id: test
+        name: Run tests
+        entry: make test
+        language: system
+        pass_filenames: false
+
+      - id: lint
+        language: system
+        name: Lint code
+        entry: make lint
+
+      - id: format
+        name: Format check
+        entry: make format-check
+        language: system
+        pass_filenames: false
+
+      - id: bandit
+        name: Security check (bandit)
+        entry: make bandit
+        language: system
+        pass_filenames: false
+
+      - id: build
+        name: Build
+        entry: make build
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: deptry
+        name: Dependency check (deptry)
+        entry: make deptry
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: pip-audit
+        name: Vulnerability scan (pip-audit)
+        entry: make audit
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
