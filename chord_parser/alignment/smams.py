@@ -9,7 +9,10 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from chord_parser.alignment.models import TimedChord
 
 
 @dataclass(frozen=True)
@@ -225,3 +228,158 @@ def parse_smams_from_dict(data: dict[str, Any]) -> WordAlignedLyrics:
     words.sort(key=lambda w: w.start)
 
     return WordAlignedLyrics(words=tuple(words))
+
+
+def _collect_chordino_observations(obj: Any) -> list[dict[str, Any]]:
+    """Recursively collect chordino chord observations from SMAMS data.
+
+    Looks for annotations with namespace "chords" and metadata.source == "chordino".
+
+    Parameters
+    ----------
+    obj : Any
+        The SMAMS data object to search.
+
+    Returns
+    -------
+    list[dict[str, Any]]
+        All chordino chord observations found.
+    """
+    results: list[dict[str, Any]] = []
+
+    if isinstance(obj, dict):
+        # Check if this is a chordino annotation
+        is_chords_namespace = obj.get("namespace") == "chords"
+        is_chordino_source = obj.get("metadata", {}).get("source") == "chordino"
+
+        if is_chords_namespace and is_chordino_source:
+            obs = obj.get("data", {}).get("observations", [])
+            results.extend(obs)
+
+        for v in obj.values():
+            results.extend(_collect_chordino_observations(v))
+    elif isinstance(obj, list):
+        for item in obj:
+            results.extend(_collect_chordino_observations(item))
+
+    return results
+
+
+def parse_chordino_from_smams(path: str | Path) -> list["TimedChord"]:
+    """Parse chordino annotations from a SMAMS file.
+
+    Extracts timed chord annotations from the "chords" namespace
+    with source "chordino" in a SMAMS file.
+
+    Parameters
+    ----------
+    path : str | Path
+        Path to the SMAMS file.
+
+    Returns
+    -------
+    list[TimedChord]
+        List of timed chord annotations from chordino.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the file does not exist.
+    json.JSONDecodeError
+        If the file is not valid JSON.
+    ValueError
+        If no chordino annotations are found in the file.
+    """
+    from chord_parser.alignment.chordino import parse_chordino_chord
+    from chord_parser.alignment.models import TimedChord
+
+    path = Path(path)
+    with path.open() as f:
+        data = json.load(f)
+
+    observations = _collect_chordino_observations(data)
+
+    if not observations:
+        msg = f"No chordino annotations found in SMAMS file: {path}"
+        raise ValueError(msg)
+
+    timed_chords: list[TimedChord] = []
+    for obs in observations:
+        interval = obs.get("interval", {})
+        start = interval.get("time", 0.0)
+        duration = interval.get("duration", 0.0)
+        end = start + duration
+        label = obs.get("value", "N")
+
+        try:
+            chord = parse_chordino_chord(label)
+        except ValueError:
+            chord = None
+
+        timed_chords.append(
+            TimedChord(
+                chord=chord,
+                label=label,
+                start=start,
+                end=end,
+            )
+        )
+
+    # Sort by start time
+    timed_chords.sort(key=lambda tc: tc.start)
+
+    return timed_chords
+
+
+def parse_chordino_from_smams_dict(data: dict[str, Any]) -> list["TimedChord"]:
+    """Parse chordino annotations from an already-loaded SMAMS dict.
+
+    Parameters
+    ----------
+    data : dict[str, Any]
+        The parsed SMAMS data.
+
+    Returns
+    -------
+    list[TimedChord]
+        List of timed chord annotations from chordino.
+
+    Raises
+    ------
+    ValueError
+        If no chordino annotations are found in the data.
+    """
+    from chord_parser.alignment.chordino import parse_chordino_chord
+    from chord_parser.alignment.models import TimedChord
+
+    observations = _collect_chordino_observations(data)
+
+    if not observations:
+        msg = "No chordino annotations found in SMAMS data"
+        raise ValueError(msg)
+
+    timed_chords: list[TimedChord] = []
+    for obs in observations:
+        interval = obs.get("interval", {})
+        start = interval.get("time", 0.0)
+        duration = interval.get("duration", 0.0)
+        end = start + duration
+        label = obs.get("value", "N")
+
+        try:
+            chord = parse_chordino_chord(label)
+        except ValueError:
+            chord = None
+
+        timed_chords.append(
+            TimedChord(
+                chord=chord,
+                label=label,
+                start=start,
+                end=end,
+            )
+        )
+
+    timed_chords.sort(key=lambda tc: tc.start)
+
+    return timed_chords

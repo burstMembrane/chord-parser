@@ -6,12 +6,14 @@ Essentia, and madmom.
 """
 
 from chord_parser.alignment.aligner import (
+    DistanceFn,
     align_chords,
     chord_distance_exact,
     chord_distance_flexible,
     chord_distance_pitchclass,
     chord_to_pitch_class_set,
 )
+from chord_parser.alignment.api import align_tab_text_with_smams, align_tab_with_smams
 from chord_parser.alignment.chordino import load_chordino_json, parse_chordino_data
 from chord_parser.alignment.extractor import extract_tab_chords
 from chord_parser.alignment.models import (
@@ -20,13 +22,20 @@ from chord_parser.alignment.models import (
     TabChord,
     TimedChord,
 )
+from chord_parser.alignment.smams import (
+    parse_chordino_from_smams,
+    parse_chordino_from_smams_dict,
+)
 
 __all__ = [
     "AlignedChord",
     "AlignmentResult",
+    "DistanceFn",
     "TabChord",
     "TimedChord",
     "align_chords",
+    "align_tab_text_with_smams",
+    "align_tab_with_smams",
     "chord_distance_exact",
     "chord_distance_flexible",
     "chord_distance_pitchclass",
@@ -36,6 +45,8 @@ __all__ = [
     "extract_tab_chords",
     "load_chordino_json",
     "parse_chordino_data",
+    "parse_chordino_from_smams",
+    "parse_chordino_from_smams_dict",
 ]
 
 
