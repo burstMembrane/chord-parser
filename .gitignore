@@ -1,2 +1,9 @@
 upsidedown
 upsidedownaudio
+diagnose_accuracy.py
+evaluate_distance_functions.py
+experiment_chordino_params.py
+out.txt
+output.json
+output_madmom_results.json
+word_aligned_lyrics.json
