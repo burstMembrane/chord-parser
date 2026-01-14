@@ -25,7 +25,6 @@ dev = [
 examples = ["streamlit>=1.52.2", "streamlit-wavesurfer>=0.2.1"]
 audio = [
     "madmom",
-    "vamprust",
     "setuptools", # madmom needs pkg_resources
 ]
 audio-essentia = ["essentia"]
@@ -102,7 +101,6 @@ build-backend = "hatchling.build"
 packages = ["chord_parser"]
 
 [tool.uv.sources]
-vamprust = { path = "../vamprust/target/wheels/vamprust-0.2.1-cp312-cp312-macosx_11_0_arm64.whl" }
 madmom = { git = "https://github.com/The-Africa-Channel/madmom-py3.10-compat.git" }
 essentia = { git = "https://github.com/MTG/essentia.git" }
 
