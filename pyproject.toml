@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "dtw-python>=1.7.2",
     "harte-library>=0.4.5",
-    "numpy>=2.4.1",
+    "numpy>=1.24.4",
     "pychord>=1.2.2",
 ]
 
