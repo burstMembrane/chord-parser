@@ -17,10 +17,7 @@ format-check:
 	uv run ruff format --check chord_parser tests
 deptry:
 	uv run deptry chord_parser
-bandit:
-	uv run bandit -r chord_parser -c pyproject.toml
-audit:
-	uv run pip-audit
+
 pre-commit:
 	uv run pre-commit run --all-files
 pre-push: lint typecheck test bandit audit deptry

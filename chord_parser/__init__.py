@@ -1,4 +1,4 @@
-"""Chord parser library for converting between chord notation formats.
+r"""Chord parser library for converting between chord notation formats.
 
 This library provides tools for parsing and converting chords between
 pychord's simplified notation (e.g., "Gm7") and Harte notation (e.g., "G:min7").
@@ -23,8 +23,15 @@ Examples
 'Bb:min7'
 >>> harte_to_pychord("C:maj")
 'C'
+
+>>> # Parse tab sheets
+>>> from chord_parser import tab_parser
+>>> sheet = tab_parser.parse("[Verse]\nGm C\nHello world")
+>>> sheet.sections[0].name
+'Verse'
 """
 
+from chord_parser import tab_parser
 from chord_parser.converter import (
     from_harte,
     from_pychord,
@@ -43,4 +50,5 @@ __all__ = [
     "harte_to_pychord",
     "pychord_quality_to_harte",
     "pychord_to_harte",
+    "tab_parser",
 ]

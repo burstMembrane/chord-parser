@@ -41,7 +41,8 @@ class TestPychordParsing:
                 unparseable.append((symbol, str(e)))
 
         if unparseable:
-            pytest.fail(f"pychord could not parse {len(unparseable)} chords:\n" + "\n".join(f"  {s}: {e}" for s, e in unparseable[:20]))
+            details = "\n".join(f"  {s}: {e}" for s, e in unparseable[:20])
+            pytest.fail(f"pychord could not parse {len(unparseable)} chords:\n{details}")
 
 
 class TestConverterCoverage:
@@ -73,8 +74,7 @@ class TestConverterCoverage:
 
         if missing_qualities:
             missing_info = "\n".join(
-                f"  '{q}': count={c}, example={failed_examples[q]}"
-                for q, c in missing_qualities.most_common(20)
+                f"  '{q}': count={c}, example={failed_examples[q]}" for q, c in missing_qualities.most_common(20)
             )
             pytest.fail(
                 f"Missing {len(missing_qualities)} quality mappings ({coverage:.1%} coverage):\n{missing_info}\n\n"
@@ -101,10 +101,7 @@ class TestConverterCoverage:
         coverage = converted / total if total > 0 else 0
 
         # We want at least 80% coverage
-        assert coverage >= 0.8, (
-            f"Only {coverage:.1%} of chords converted successfully. "
-            f"Failed examples: {failed[:10]}"
-        )
+        assert coverage >= 0.8, f"Only {coverage:.1%} of chords converted successfully. Failed examples: {failed[:10]}"
 
 
 class TestRoundTripConversion:

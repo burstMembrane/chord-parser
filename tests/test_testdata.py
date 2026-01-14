@@ -176,11 +176,13 @@ class TestFullSequenceConversion:
                 continue
             try:
                 chord = from_pychord(chord_str)
-                converted.append({
-                    "chord": chord.to_harte(),
-                    "start": entry["start"],
-                    "end": entry["end"],
-                })
+                converted.append(
+                    {
+                        "chord": chord.to_harte(),
+                        "start": entry["start"],
+                        "end": entry["end"],
+                    }
+                )
             except ValueError as e:
                 errors.append((chord_str, str(e)))
 
@@ -205,11 +207,13 @@ class TestFullSequenceConversion:
                 continue
             try:
                 chord = from_harte(chord_str)
-                converted.append({
-                    "chord": chord.to_pychord(),
-                    "onset": entry["onset"],
-                    "offset": entry["offset"],
-                })
+                converted.append(
+                    {
+                        "chord": chord.to_pychord(),
+                        "onset": entry["onset"],
+                        "offset": entry["offset"],
+                    }
+                )
             except ValueError as e:
                 errors.append((chord_str, str(e)))
 

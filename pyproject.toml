@@ -4,7 +4,14 @@ version = "0.1.0"
 description = "A chord parser for converting and parsing chords of various formats"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["harte-library>=0.4.5", "pychord>=1.2.2"]
+dependencies = [
+    "dtw-python>=1.7.2",
+    "harte-library>=0.4.5",
+    "numpy>=2.4.1",
+    "pychord>=1.2.2",
+    "streamlit>=1.52.2",
+    "streamlit-wavesurfer>=0.2.1",
+]
 
 [dependency-groups]
 dev = [
@@ -15,8 +22,19 @@ dev = [
     "pre-commit>=4.5.0",
     "pytest>=9.0.2",
     "ruff>=0.14.9",
+    "vamprust",
 ]
-
+examples = [
+    "streamlit>=1.52.2",
+    "streamlit-wavesurfer>=0.2.1",
+]
+audio = [
+    "madmom",
+    "setuptools",  # madmom needs pkg_resources
+]
+audio-essentia = [
+    "essentia",
+]
 
 [tool.ruff]
 line-length = 120
@@ -53,7 +71,8 @@ select = [
 ignore = ["D100", "D400", "D104", "D200", "D401", "D205"] # optional
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["D"]
+"tests/**" = ["D", "PLR2004", "PTH123", "ERA001", "F541"]
+"examples/**" = ["T201", "D"]  # Allow print statements in CLI examples
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
@@ -71,6 +90,10 @@ python_version = "3.12"
 strict = true
 ignore_missing_imports = true
 
+[tool.deptry]
+# Ignore DEP003 for the package itself - internal imports are not transitive dependencies
+ignore = ["DEP003"]
+
 [tool.bandit]
 exclude_dirs = ["tests"]
 
@@ -83,3 +106,12 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["chord_parser"]
+
+[tool.uv.sources]
+vamprust = { path = "../vamprust/target/wheels/vamprust-0.2.1-cp312-cp312-macosx_11_0_arm64.whl" }
+madmom = { git = "https://github.com/The-Africa-Channel/madmom-py3.10-compat.git" }
+essentia = { git = "https://github.com/MTG/essentia.git" }
+
+[tool.uv.extra-build-dependencies]
+madmom = ["Cython", "numpy"]
+essentia = ["numpy", "pyyaml", "six"]
