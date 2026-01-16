@@ -183,6 +183,16 @@ def format_pitch_classes(chord: Chord | None) -> str:
     return ", ".join(note_names[pc] for pc in sorted(pcs))
 
 
+def to_pychord_label(chord: Chord | None, original_label: str) -> str:
+    """Convert a chord to pychord notation for consistent display."""
+    if chord is None:
+        return original_label
+    try:
+        return chord.to_pychord()
+    except (ValueError, Exception):
+        return original_label
+
+
 def main() -> None:
     """Run the alignment viewer app."""
     st.set_page_config(
@@ -417,7 +427,8 @@ def main() -> None:
         if gt_chords:
             gt_at_time = find_gt_chord_at_time(gt_chords, timed.start)
             if gt_at_time:
-                gt_label = gt_at_time.label
+                # Convert GT label to pychord format for consistent display
+                gt_label = to_pychord_label(gt_at_time.chord, gt_at_time.label)
                 if gt_at_time.chord and tc.chord:
                     if roots_match(tc.chord, gt_at_time.chord):
                         gt_match = "Root" if quality_category(tc.chord.quality) != quality_category(gt_at_time.chord.quality) else "Exact"
