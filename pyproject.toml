@@ -7,8 +7,11 @@ requires-python = ">=3.12"
 dependencies = [
     "dtw-python>=1.7.2",
     "harte-library>=0.4.5",
+    "minineedle>=3.1.5",
+    "mir-eval>=0.8.2",
     "numpy>=1.24.4",
     "pychord>=1.2.2",
+    "smams",
 ]
 
 [dependency-groups]
@@ -16,13 +19,17 @@ streamlit = ["streamlit>=1.52.2", "streamlit-wavesurfer>=0.2.1"]
 dev = [
     "bandit>=1.9.2",
     "deptry>=0.24.0",
+    "ipykernel>=7.1.0",
     "mypy>=1.19.1",
     "pip-audit>=2.10.0",
     "pre-commit>=4.5.0",
     "pytest>=9.0.2",
     "ruff>=0.14.9",
 ]
-examples = ["streamlit>=1.52.2", "streamlit-wavesurfer>=0.2.1"]
+examples = [
+    "streamlit>=1.52.2",
+    "streamlit-wavesurfer>=0.2.1",
+]
 audio = [
     "madmom",
     "setuptools", # madmom needs pkg_resources
@@ -103,7 +110,7 @@ packages = ["chord_parser"]
 [tool.uv.sources]
 madmom = { git = "https://github.com/The-Africa-Channel/madmom-py3.10-compat.git" }
 essentia = { git = "https://github.com/MTG/essentia.git" }
-
+smams = { git = "ssh://git@bitbucket.org/mattstepincto/smams" }
 [tool.uv.extra-build-dependencies]
 madmom = ["Cython", "numpy"]
 essentia = ["numpy", "pyyaml", "six"]

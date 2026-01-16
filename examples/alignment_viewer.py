@@ -1,141 +1,61 @@
 #!/usr/bin/env python
-"""Streamlit app for viewing chord alignment with audio waveform.
+"""Streamlit app for viewing chord alignment results.
 
 Run with: uv run streamlit run examples/alignment_viewer.py
 
 Features:
-- Live Chordino analysis with configurable parameters
-- DTW alignment between tab chords and Chordino output
-- Comparison against ground truth (Billboard annotations)
-- Visual waveform with aligned chord regions
+- Alignment between tab chords and audio chord predictions
+- Comparison against ground truth annotations
+- Pitch class similarity analysis
+- Auto-transposition detection
+- Visual chord timeline
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from enum import Enum
+import json
+import re
 from pathlib import Path
 
-import numpy as np
-import soundfile as sf
 import streamlit as st
-from streamlit_wavesurfer import Region, WaveSurferOptions, wavesurfer
 
 from chord_parser import tab_parser
 from chord_parser.alignment import (
-    AlignedChord,
     align_chords,
-    chord_distance_exact,
-    chord_distance_flexible,
-    chord_distance_pitchclass,
-    chord_to_pitch_class_set,
+    align_with_transposition,
+    chord_similarity,
+    compute_alignment_metrics,
     extract_tab_chords,
-    load_chordino_json,
 )
-from chord_parser.alignment.models import TimedChord
+from chord_parser.alignment.models import TabChord, TimedChord
 from chord_parser.converter import from_harte, from_pychord
 from chord_parser.models import Chord
-
-
-class TuningMode(Enum):
-    """Chordino tuning mode."""
-
-    LOCAL = 0
-    GLOBAL = 1
-
-
-@dataclass
-class ChordinoParams:
-    """Chordino plugin parameters."""
-
-    use_nnls: bool = True
-    roll_on: float = 0.0
-    tuning_mode: TuningMode = TuningMode.GLOBAL
-    spectral_whitening: float = 1.0
-    spectral_shape: float = 0.7
-    boost_n_likelihood: float = 0.1
-
-    def to_dict(self) -> dict[str, float]:
-        """Convert to parameter dictionary for vamprust."""
-        return {
-            "useNNLS": 1.0 if self.use_nnls else 0.0,
-            "rollon": self.roll_on,
-            "tuningmode": float(self.tuning_mode.value),
-            "whitening": self.spectral_whitening,
-            "s": self.spectral_shape,
-            "boostn": self.boost_n_likelihood,
-        }
-
-
-# Genre-specific configurations
-CHORDINO_CONFIGS: dict[str, ChordinoParams] = {
-    "Default": ChordinoParams(),
-    "Pop/Rock": ChordinoParams(
-        use_nnls=True,
-        roll_on=0.0,
-        tuning_mode=TuningMode.GLOBAL,
-        spectral_whitening=0.8,
-        spectral_shape=0.6,
-        boost_n_likelihood=0.02,
-    ),
-    "Jazz": ChordinoParams(
-        use_nnls=True,
-        roll_on=0.5,
-        tuning_mode=TuningMode.LOCAL,
-        spectral_whitening=0.9,
-        spectral_shape=0.8,
-        boost_n_likelihood=0.05,
-    ),
-    "Classical": ChordinoParams(
-        use_nnls=True,
-        roll_on=0.0,
-        tuning_mode=TuningMode.GLOBAL,
-        spectral_whitening=0.7,
-        spectral_shape=0.5,
-        boost_n_likelihood=0.1,
-    ),
-    "Electronic": ChordinoParams(
-        use_nnls=True,
-        roll_on=1.0,
-        tuning_mode=TuningMode.GLOBAL,
-        spectral_whitening=0.95,
-        spectral_shape=0.7,
-        boost_n_likelihood=0.01,
-    ),
-}
-
-# Distance function registry
-DISTANCE_FUNCTIONS = {
-    "Flexible (root + quality)": chord_distance_flexible,
-    "Exact (full match)": chord_distance_exact,
-    "Pitch Class (Jaccard)": chord_distance_pitchclass,
-}
+from chord_parser.pitch_class import (
+    chord_pitch_similarity,
+    chord_to_pitch_classes,
+    quality_category,
+    roots_match,
+)
 
 # Color scheme for match quality
 MATCH_COLORS = {
-    "perfect": "rgba(34, 197, 94, 0.4)",  # green
-    "close": "rgba(250, 204, 21, 0.4)",  # yellow
-    "mismatch": "rgba(239, 68, 68, 0.4)",  # red
+    "exact": "#22c55e",  # green
+    "root_only": "#eab308",  # yellow
+    "mismatch": "#ef4444",  # red
+    "unaligned": "#6b7280",  # gray
 }
 
 # Section colors for visual distinction
 SECTION_COLORS = [
-    "rgba(99, 102, 241, 0.4)",  # indigo
-    "rgba(236, 72, 153, 0.4)",  # pink
-    "rgba(14, 165, 233, 0.4)",  # sky
-    "rgba(168, 85, 247, 0.4)",  # purple
-    "rgba(20, 184, 166, 0.4)",  # teal
-    "rgba(249, 115, 22, 0.4)",  # orange
+    "#6366f1",  # indigo
+    "#ec4899",  # pink
+    "#0ea5e9",  # sky
+    "#a855f7",  # purple
+    "#14b8a6",  # teal
+    "#f97316",  # orange
+    "#84cc16",  # lime
+    "#f43f5e",  # rose
 ]
-
-
-def get_match_color(distance: float, threshold: float) -> str:
-    """Get color based on alignment distance."""
-    if distance == 0.0:
-        return MATCH_COLORS["perfect"]
-    elif distance <= threshold:
-        return MATCH_COLORS["close"]
-    return MATCH_COLORS["mismatch"]
 
 
 def get_section_color(section: str, sections: list[str]) -> str:
@@ -146,238 +66,128 @@ def get_section_color(section: str, sections: list[str]) -> str:
     return SECTION_COLORS[0]
 
 
-def format_pitch_classes(chord: Chord | None) -> str:
-    """Format pitch classes for display."""
-    if chord is None:
-        return "-"
-    try:
-        pc_set = chord_to_pitch_class_set(chord, include_bass=False)
-        return str(sorted(pc_set))
-    except (ValueError, Exception):
-        return "-"
-
-
-def run_chordino(audio_path: Path, params: ChordinoParams) -> list[TimedChord]:
-    """Run Chordino with specified parameters using vamprust."""
-    from vamprust._vamprust import PyVampHost as VampHost
-
-    # Load audio
-    samples, sr = sf.read(audio_path, dtype="float32")
-    if len(samples.shape) > 1:
-        samples = samples.mean(axis=1)
-
-    host = VampHost()
-
-    # Find and load Chordino plugin
-    libraries = host.find_plugin_libraries()
-    chordino_lib = None
-    for lib_path in libraries:
-        if "chordino" in lib_path.lower() or "nnls-chroma" in lib_path.lower():
-            chordino_lib = host.load_library(lib_path)
-            if chordino_lib:
-                break
-
-    if chordino_lib is None:
-        raise RuntimeError("Could not find Chordino/NNLS-Chroma plugin")
-
-    # Find Chordino plugin
-    plugins = chordino_lib.list_plugins()
-    chordino_idx = None
-    for i, plugin_info in enumerate(plugins):
-        if "chordino" in plugin_info.identifier.lower():
-            chordino_idx = i
-            break
-
-    if chordino_idx is None:
-        raise RuntimeError("Could not find chordino plugin in library")
-
-    # Instantiate and configure plugin
-    plugin = chordino_lib.instantiate_plugin(chordino_idx, float(sr))
-    if plugin is None:
-        raise RuntimeError("Failed to instantiate Chordino plugin")
-
-    plugin.set_parameters(params.to_dict())
-    plugin.initialize(float(sr), channels=1)
-
-    # Process audio
-    features = plugin.process_audio_full(
-        samples.tolist(),
-        float(sr),
-        channels=1,
-        output_index=0,
-    )
-
-    # Parse features into TimedChord objects
-    chords: list[TimedChord] = []
-    if features:
-        for i, feature in enumerate(features):
-            sec = feature.get("sec", 0)
-            nsec = feature.get("nsec", 0)
-            start = sec + nsec / 1_000_000_000
-            label = feature.get("label", "N")
-
-            if i + 1 < len(features):
-                next_sec = features[i + 1].get("sec", 0)
-                next_nsec = features[i + 1].get("nsec", 0)
-                end = next_sec + next_nsec / 1_000_000_000
-            else:
-                end = start + 0.5
-
-            # Parse chord
-            chord_obj = None
-            if label != "N":
-                try:
-                    chord_obj = from_pychord(label)
-                except (ValueError, Exception):
-                    pass
-
-            chords.append(TimedChord(start=start, end=end, chord=chord_obj, label=label))
-
-    return chords
-
-
-def load_ground_truth(json_path: Path) -> list[TimedChord]:
-    """Load ground truth from JSON file."""
-    import json
-
-    with open(json_path) as f:
+def load_ground_truth(path: Path) -> list[TimedChord]:
+    """Load ground truth chords from JSON file (Harte notation)."""
+    with path.open() as f:
         data = json.load(f)
 
-    chords = []
-    for entry in data["ground_truth"]["chords"]:
-        chord_obj = None
-        label = entry["chord"]
-        if label != "N":
-            try:
-                chord_obj = from_harte(label)
-            except (ValueError, Exception):
-                pass
+    timed_chords: list[TimedChord] = []
+    for item in data:
+        label = item["chord"]
+        start = float(item["start"])
+        end = item.get("end")
+        if end is not None:
+            end = float(end)
 
-        chords.append(
-            TimedChord(
-                start=entry["start"],
-                end=entry["end"],
-                chord=chord_obj,
-                label=label,
-            )
-        )
-    return chords
-
-
-def alignment_to_regions(
-    alignments: tuple[AlignedChord, ...],
-    color_by: str,
-    threshold: float,
-    sections: list[str],
-) -> list[Region]:
-    """Convert alignment results to wavesurfer regions."""
-    regions = []
-    seen_times: set[float] = set()
-
-    for aligned in alignments:
-        start = aligned.timed_chord.start
-
-        if start in seen_times:
-            continue
-        seen_times.add(start)
-
-        end = aligned.timed_chord.end or start + 0.5
-        content = aligned.tab_chord.label
-        section = aligned.tab_chord.section
-
-        if color_by == "Match Quality":
-            color = get_match_color(aligned.distance, threshold)
+        if label == "N":
+            chord = None
         else:
-            color = get_section_color(section, sections)
+            try:
+                chord = from_harte(label)
+            except ValueError:
+                chord = None
 
-        regions.append(
-            Region(
+        timed_chords.append(
+            TimedChord(
+                chord=chord,
+                label=label,
                 start=start,
                 end=end,
-                content=content,
-                color=color,
             )
         )
 
-    return regions
+    return timed_chords
 
 
-def compute_gt_accuracy(
-    alignments: tuple[AlignedChord, ...],
-    ground_truth: list[TimedChord],
-    threshold: float = 0.25,
-) -> dict[str, float]:
-    """Compare aligned tab chords against ground truth."""
-    perfect = 0
-    close = 0
-    mismatch = 0
+def load_predicted_chords(path: Path) -> list[TimedChord]:
+    """Load predicted chords from JSON file (pychord notation)."""
+    with path.open() as f:
+        data = json.load(f)
 
-    for aligned in alignments:
-        tab_chord = aligned.tab_chord.chord
-        timed = aligned.timed_chord
+    timed_chords: list[TimedChord] = []
+    for item in data:
+        label = item["chord"]
+        start = float(item["start"])
+        end = item.get("end")
+        if end is not None:
+            end = float(end)
 
-        if tab_chord is None:
-            continue
-
-        # Find GT chord at this time
-        gt_chord = None
-        for gt in ground_truth:
-            if gt.chord is None:
-                continue
-            overlap_start = max(timed.start, gt.start)
-            overlap_end = min(timed.end or timed.start + 0.5, gt.end)
-            if overlap_end > overlap_start:
-                gt_chord = gt.chord
-                break
-
-        if gt_chord is None:
-            continue
-
-        dist = chord_distance_pitchclass(tab_chord, gt_chord)
-        if dist == 0.0:
-            perfect += 1
-        elif dist <= threshold:
-            close += 1
+        if label == "N":
+            chord = None
         else:
-            mismatch += 1
+            try:
+                chord = from_pychord(label)
+            except ValueError:
+                chord = None
 
-    total = perfect + close + mismatch
-    return {
-        "perfect": perfect,
-        "close": close,
-        "mismatch": mismatch,
-        "total": total,
-        "accuracy": (perfect + close) / total if total > 0 else 0,
-    }
+        timed_chords.append(
+            TimedChord(
+                chord=chord,
+                label=label,
+                start=start,
+                end=end,
+            )
+        )
+
+    return timed_chords
 
 
-def load_tab_data(tab_path: Path) -> tuple:
+def load_tab_data(tab_path: Path) -> tuple[tuple[TabChord, ...], list[str]]:
     """Load and parse tab sheet."""
     content = tab_path.read_text()
 
+    # Strip frontmatter if present
+    frontmatter_re = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+    match = frontmatter_re.match(content)
+    if match:
+        content = content[match.end():]
+
+    # Extract content from code blocks if present
     lines = content.split("\n")
     in_code_block = False
     tab_lines = []
-    for line in lines:
-        if line.strip() == "```":
-            in_code_block = not in_code_block
-            continue
-        if in_code_block:
-            tab_lines.append(line)
+    has_code_block = "```" in content
 
-    tab_content = "\n".join(tab_lines)
+    if has_code_block:
+        for line in lines:
+            if line.strip() == "```":
+                in_code_block = not in_code_block
+                continue
+            if in_code_block:
+                tab_lines.append(line)
+        tab_content = "\n".join(tab_lines)
+    else:
+        tab_content = content
+
     sheet = tab_parser.parse(tab_content)
     tab_chords = extract_tab_chords(sheet)
     sections = list(dict.fromkeys(tc.section for tc in tab_chords))
 
-    return tab_chords, sheet, sections
+    return tab_chords, sections
+
+
+def find_gt_chord_at_time(gt_chords: list[TimedChord], time: float) -> TimedChord | None:
+    """Find the ground truth chord active at a given time."""
+    for tc in gt_chords:
+        if tc.start <= time and (tc.end is None or time < tc.end):
+            return tc
+    return None
+
+
+def format_pitch_classes(chord: Chord | None) -> str:
+    """Format pitch classes for display."""
+    if chord is None:
+        return "-"
+    pcs = chord_to_pitch_classes(chord)
+    note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+    return ", ".join(note_names[pc] for pc in sorted(pcs))
 
 
 def main() -> None:
     """Run the alignment viewer app."""
     st.set_page_config(
         page_title="Chord Alignment Viewer",
-        page_icon="musical_note",
+        page_icon=":musical_note:",
         layout="wide",
     )
 
@@ -385,85 +195,94 @@ def main() -> None:
 
     # Paths
     project_root = Path(__file__).parent.parent
-    tab_path = project_root / "upsidedown" / "tab.md"
-    gt_path = project_root / "upsidedown" / "1285_chordino.json"
 
-    # Audio options
-    audio_files = {
-        "Mix (with vocals)": project_root / "upsidedown" / "1285.ogg",
-        "Instrumental": project_root / "upsidedown" / "1285_instrumental.wav",
-    }
+    # Allow selecting different datasets
+    st.sidebar.header("Dataset")
 
-    # Check files exist
-    if not tab_path.exists():
-        st.error(f"Tab file not found: {tab_path}")
+    # Find available datasets (directories with required files)
+    datasets = {}
+    for d in project_root.iterdir():
+        if d.is_dir():
+            tab_file = d / "tab.md"
+            pred_file = d / "pred_chords.json"
+            if tab_file.exists() and pred_file.exists():
+                datasets[d.name] = d
+
+    if not datasets:
+        st.error("No datasets found. Expected directories with tab.md and pred_chords.json files.")
         return
+
+    selected_dataset = st.sidebar.selectbox(
+        "Select Dataset",
+        options=list(datasets.keys()),
+        index=0,
+    )
+    dataset_path = datasets[selected_dataset]
+
+    # File paths
+    tab_path = dataset_path / "tab.md"
+    pred_path = dataset_path / "pred_chords.json"
+    gt_path = dataset_path / "gt_chords.json"
 
     # Sidebar controls
-    st.sidebar.header("Audio Source")
-
-    audio_choice = st.sidebar.selectbox(
-        "Audio File",
-        options=list(audio_files.keys()),
-        index=1,  # Default to instrumental
-        help="Choose between mix or instrumental audio",
-    )
-    audio_path = audio_files[audio_choice]
-
-    if not audio_path.exists():
-        st.error(f"Audio file not found: {audio_path}")
-        return
-
-    st.sidebar.header("Chordino Settings")
-
-    chordino_config = st.sidebar.selectbox(
-        "Preset Configuration",
-        options=list(CHORDINO_CONFIGS.keys()),
-        index=1,  # Default to Pop/Rock
-        help="Genre-specific Chordino parameters",
-    )
-
-    # Show current params
-    params = CHORDINO_CONFIGS[chordino_config]
-    with st.sidebar.expander("Parameter Details"):
-        st.write(f"- NNLS: {params.use_nnls}")
-        st.write(f"- Roll-on: {params.roll_on}")
-        st.write(f"- Tuning: {params.tuning_mode.name}")
-        st.write(f"- Whitening: {params.spectral_whitening}")
-        st.write(f"- Shape: {params.spectral_shape}")
-        st.write(f"- Boost N: {params.boost_n_likelihood}")
-
     st.sidebar.header("Alignment Settings")
 
-    distance_fn_name = st.sidebar.selectbox(
-        "Distance Function",
-        options=list(DISTANCE_FUNCTIONS.keys()),
-        index=0,
-        help="How to measure chord similarity",
-    )
-    distance_fn = DISTANCE_FUNCTIONS[distance_fn_name]
-
-    threshold = st.sidebar.slider(
-        "Close Match Threshold",
+    min_similarity = st.sidebar.slider(
+        "Minimum Similarity",
         min_value=0.0,
         max_value=1.0,
-        value=0.25,
+        value=0.5,
         step=0.05,
-        help="Distance threshold for 'close' matches",
+        help="Minimum similarity to accept a chord match",
     )
 
+    lookahead = st.sidebar.slider(
+        "Lookahead Window",
+        min_value=3,
+        max_value=20,
+        value=5,
+        step=1,
+        help="Number of audio chords to search ahead",
+    )
+
+    use_transposition = st.sidebar.checkbox(
+        "Auto-detect Transposition",
+        value=True,
+        help="Try all 12 transpositions and pick the best",
+    )
+
+    st.sidebar.header("Display Settings")
+
     color_by = st.sidebar.radio(
-        "Color Regions By",
-        options=["Match Quality", "Section"],
+        "Color By",
+        options=["Match Quality", "Section", "Pitch Class Similarity"],
         index=0,
     )
 
-    # Load tab data
-    @st.cache_data
-    def cached_load_tab():
-        return load_tab_data(tab_path)
+    show_unaligned = st.sidebar.checkbox(
+        "Show Unaligned Tab Chords",
+        value=True,
+    )
 
-    tab_chords, sheet, sections = cached_load_tab()
+    # Load data
+    @st.cache_data
+    def cached_load_tab(path: str) -> tuple[tuple[TabChord, ...], list[str]]:
+        return load_tab_data(Path(path))
+
+    @st.cache_data
+    def cached_load_pred(path: str) -> list[TimedChord]:
+        return load_predicted_chords(Path(path))
+
+    @st.cache_data
+    def cached_load_gt(path: str) -> list[TimedChord]:
+        return load_ground_truth(Path(path))
+
+    tab_chords, sections = cached_load_tab(str(tab_path))
+    pred_chords = cached_load_pred(str(pred_path))
+
+    gt_chords = None
+    if gt_path.exists():
+        gt_chords = cached_load_gt(str(gt_path))
 
     # Filter by section
     selected_sections = st.sidebar.multiselect(
@@ -473,124 +292,241 @@ def main() -> None:
         help="Show only chords from selected sections",
     )
 
-    # Run Chordino (cached by audio path and config)
-    @st.cache_data
-    def cached_chordino(audio_path_str: str, config_name: str):
-        params = CHORDINO_CONFIGS[config_name]
-        return run_chordino(Path(audio_path_str), params)
-
-    with st.spinner("Running Chordino analysis..."):
-        timed_chords = cached_chordino(str(audio_path), chordino_config)
+    filtered_tab = tuple(tc for tc in tab_chords if tc.section in selected_sections)
 
     # Run alignment
-    @st.cache_data
-    def cached_align(audio_path_str: str, config_name: str, fn_name: str):
-        timed = cached_chordino(audio_path_str, config_name)
-        tab, _, _ = cached_load_tab()
-        fn = DISTANCE_FUNCTIONS[fn_name]
-        return align_chords(tab, timed, distance_fn=fn)
+    if use_transposition:
+        result, best_transposition = align_with_transposition(
+            tab_chords=list(filtered_tab),
+            timed_chords=pred_chords,
+            lookahead=lookahead,
+            min_similarity=min_similarity,
+        )
+        transposition_info = f"Best transposition: {best_transposition} semitones"
+    else:
+        result = align_chords(
+            tab_chords=list(filtered_tab),
+            timed_chords=pred_chords,
+            lookahead=lookahead,
+            min_similarity=min_similarity,
+        )
+        transposition_info = "Transposition detection disabled"
 
-    result = cached_align(str(audio_path), chordino_config, distance_fn_name)
+    metrics = compute_alignment_metrics(result)
 
-    # Filter alignments by section
-    filtered_alignments = tuple(
-        a for a in result.alignments if a.tab_chord.section in selected_sections
-    )
-
-    # Load ground truth for comparison
-    gt_chords = None
-    gt_accuracy = None
-    if gt_path.exists():
-        @st.cache_data
-        def cached_load_gt():
-            return load_ground_truth(gt_path)
-
-        gt_chords = cached_load_gt()
-        gt_accuracy = compute_gt_accuracy(filtered_alignments, gt_chords, threshold)
-
-    # Stats
+    # Display stats
     st.subheader("Alignment Statistics")
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
-    perfect = sum(1 for a in filtered_alignments if a.distance == 0.0)
-    close = sum(1 for a in filtered_alignments if 0 < a.distance <= threshold)
-    mismatch = sum(1 for a in filtered_alignments if a.distance > threshold)
-    total = len(filtered_alignments)
+    col1.metric("Tab Chords", len(filtered_tab))
+    col2.metric("Predicted Chords", len(pred_chords))
+    col3.metric("Aligned", f"{len(result.alignments)} ({metrics['coverage']:.0%})")
+    col4.metric("Exact Matches", f"{metrics['exact_matches']:.0%}")
+    col5.metric("Avg Similarity", f"{metrics['avg_similarity']:.2f}")
 
-    col1.metric("Tab Chords", total)
-    col2.metric(
-        "Perfect (Tab-Chordino)",
-        f"{perfect} ({100*perfect/total:.0f}%)" if total else "0",
-    )
-    col3.metric(
-        "Close (Tab-Chordino)",
-        f"{close} ({100*close/total:.0f}%)" if total else "0",
-    )
-    col4.metric(
-        "Mismatch (Tab-Chordino)",
-        f"{mismatch} ({100*mismatch/total:.0f}%)" if total else "0",
-    )
+    st.caption(transposition_info)
 
-    # Show Chordino info
-    st.caption(
-        f"Chordino detected {len(timed_chords)} chords using '{chordino_config}' preset on {audio_choice}"
-    )
+    # Pitch class analysis
+    st.subheader("Pitch Class Similarity Analysis")
 
-    # Convert to regions
-    regions = alignment_to_regions(filtered_alignments, color_by, threshold, sections)
+    pc_col1, pc_col2, pc_col3 = st.columns(3)
 
-    # Waveform display
-    st.subheader("Audio Waveform with Aligned Chords")
+    high_pc = sum(1 for a in result.alignments if chord_pitch_similarity(a.tab_chord.chord, a.timed_chord.chord) >= 0.8)
+    med_pc = sum(1 for a in result.alignments if 0.5 <= chord_pitch_similarity(a.tab_chord.chord, a.timed_chord.chord) < 0.8)
+    low_pc = sum(1 for a in result.alignments if chord_pitch_similarity(a.tab_chord.chord, a.timed_chord.chord) < 0.5)
 
-    wavesurfer(
-        audio_src=str(audio_path),
-        regions=regions,
-        plugins=["regions", "timeline", "zoom"],
-        show_controls=True,
-        region_colormap="viridis",
-        wave_options=WaveSurferOptions(minPxPerSec=200),
-        key="waveform",
-    )
-
-    # Legend
-    st.markdown("---")
-    if color_by == "Match Quality":
-        st.markdown(
-            "**Legend:** "
-            '<span style="background-color: rgba(34, 197, 94, 0.6); padding: 2px 8px;">Perfect Match</span> '
-            '<span style="background-color: rgba(250, 204, 21, 0.6); padding: 2px 8px;">Close Match</span> '
-            '<span style="background-color: rgba(239, 68, 68, 0.6); padding: 2px 8px;">Mismatch</span>',
-            unsafe_allow_html=True,
-        )
-
-    # Alignment table
-    with st.expander("Alignment Details", expanded=False):
-        table_data = []
-        for a in filtered_alignments:
-            table_data.append(
-                {
-                    "Tab Chord": a.tab_chord.label,
-                    "Tab PC": format_pitch_classes(a.tab_chord.chord),
-                    "Chordino": a.timed_chord.label,
-                    "Chordino PC": format_pitch_classes(a.timed_chord.chord),
-                    "Start": f"{a.timed_chord.start:.2f}s",
-                    "End": f"{a.timed_chord.end:.2f}s" if a.timed_chord.end else "-",
-                    "Distance": f"{a.distance:.2f}",
-                    "Section": a.tab_chord.section,
-                }
-            )
-        st.dataframe(table_data, use_container_width=True)
+    total = len(result.alignments) or 1
+    pc_col1.metric("High PC Sim (>=0.8)", f"{high_pc} ({high_pc/total:.0%})")
+    pc_col2.metric("Medium PC Sim", f"{med_pc} ({med_pc/total:.0%})")
+    pc_col3.metric("Low PC Sim (<0.5)", f"{low_pc} ({low_pc/total:.0%})")
 
     # Ground truth comparison
-    if gt_chords and gt_accuracy:
-        with st.expander("Ground Truth Comparison", expanded=False):
-            st.write(f"**Billboard Ground Truth:** {len(gt_chords)} annotations")
-            st.write(f"**Tab vs GT Results:**")
-            st.write(f"- Perfect matches: {gt_accuracy['perfect']}")
-            st.write(f"- Close matches: {gt_accuracy['close']}")
-            st.write(f"- Mismatches: {gt_accuracy['mismatch']}")
-            st.write(f"- **Accuracy: {gt_accuracy['accuracy']*100:.1f}%**")
+    if gt_chords:
+        st.subheader("Ground Truth Comparison")
+
+        gt_col1, gt_col2, gt_col3, gt_col4 = st.columns(4)
+        gt_col1.metric("GT Chords", len(gt_chords))
+
+        # Compare aligned chords to GT
+        gt_exact = 0
+        gt_root = 0
+        gt_mismatch = 0
+
+        for aligned in result.alignments:
+            aligned_time = aligned.timed_chord.start
+            gt_at_time = find_gt_chord_at_time(gt_chords, aligned_time)
+
+            if gt_at_time is None or gt_at_time.chord is None:
+                gt_mismatch += 1
+                continue
+
+            if aligned.tab_chord.chord is None:
+                gt_mismatch += 1
+                continue
+
+            if roots_match(aligned.tab_chord.chord, gt_at_time.chord):
+                if quality_category(aligned.tab_chord.chord.quality) == quality_category(gt_at_time.chord.quality):
+                    gt_exact += 1
+                else:
+                    gt_root += 1
+            else:
+                gt_mismatch += 1
+
+        gt_total = gt_exact + gt_root + gt_mismatch or 1
+        gt_col2.metric("Exact vs GT", f"{gt_exact} ({gt_exact/gt_total:.0%})")
+        gt_col3.metric("Root Match vs GT", f"{gt_root} ({gt_root/gt_total:.0%})")
+        gt_col4.metric("Mismatch vs GT", f"{gt_mismatch} ({gt_mismatch/gt_total:.0%})")
+
+    # Chord timeline visualization
+    st.subheader("Chord Timeline")
+
+    # Build timeline data
+    timeline_data = []
+    aligned_indices = {a.tab_chord.index for a in result.alignments}
+
+    for aligned in result.alignments:
+        tc = aligned.tab_chord
+        timed = aligned.timed_chord
+
+        # Determine color based on settings
+        sim = chord_similarity(tc.chord, timed.chord)
+        pc_sim = chord_pitch_similarity(tc.chord, timed.chord)
+
+        if color_by == "Match Quality":
+            if sim >= 1.0:
+                color = MATCH_COLORS["exact"]
+            elif sim >= 0.5:
+                color = MATCH_COLORS["root_only"]
+            else:
+                color = MATCH_COLORS["mismatch"]
+        elif color_by == "Pitch Class Similarity":
+            # Gradient from red to green based on PC similarity
+            if pc_sim >= 0.8:
+                color = MATCH_COLORS["exact"]
+            elif pc_sim >= 0.5:
+                color = MATCH_COLORS["root_only"]
+            else:
+                color = MATCH_COLORS["mismatch"]
+        else:  # Section
+            color = get_section_color(tc.section, sections)
+
+        # GT comparison
+        gt_label = "-"
+        gt_match = "-"
+        if gt_chords:
+            gt_at_time = find_gt_chord_at_time(gt_chords, timed.start)
+            if gt_at_time:
+                gt_label = gt_at_time.label
+                if gt_at_time.chord and tc.chord:
+                    if roots_match(tc.chord, gt_at_time.chord):
+                        gt_match = "Root" if quality_category(tc.chord.quality) != quality_category(gt_at_time.chord.quality) else "Exact"
+                    else:
+                        gt_match = "Mismatch"
+
+        timeline_data.append({
+            "Section": tc.section,
+            "Tab Chord": tc.label,
+            "Matched": timed.label,
+            "Start": f"{timed.start:.2f}s",
+            "End": f"{timed.end:.2f}s" if timed.end else "-",
+            "Similarity": f"{sim:.0%}",
+            "PC Jaccard": f"{pc_sim:.2f}",
+            "Tab PCs": format_pitch_classes(tc.chord),
+            "Pred PCs": format_pitch_classes(timed.chord),
+            "GT Chord": gt_label,
+            "GT Match": gt_match,
+            "_color": color,
+        })
+
+    # Add unaligned chords if requested
+    if show_unaligned:
+        for tc in filtered_tab:
+            if tc.index not in aligned_indices:
+                timeline_data.append({
+                    "Section": tc.section,
+                    "Tab Chord": tc.label,
+                    "Matched": "(unaligned)",
+                    "Start": "-",
+                    "End": "-",
+                    "Similarity": "-",
+                    "PC Jaccard": "-",
+                    "Tab PCs": format_pitch_classes(tc.chord),
+                    "Pred PCs": "-",
+                    "GT Chord": "-",
+                    "GT Match": "-",
+                    "_color": MATCH_COLORS["unaligned"],
+                })
+
+    # Display timeline
+    if timeline_data:
+        # Create a styled dataframe
+        display_data = [{k: v for k, v in d.items() if not k.startswith("_")} for d in timeline_data]
+
+        st.dataframe(
+            display_data,
+            use_container_width=True,
+            height=400,
+        )
+
+    # Low similarity pairs detail
+    with st.expander("Low Pitch Class Similarity Pairs", expanded=False):
+        low_sim_data = []
+        for aligned in result.alignments:
+            pc_sim = chord_pitch_similarity(aligned.tab_chord.chord, aligned.timed_chord.chord)
+            if pc_sim < 0.5:
+                low_sim_data.append({
+                    "Tab": aligned.tab_chord.label,
+                    "Tab PCs": format_pitch_classes(aligned.tab_chord.chord),
+                    "Predicted": aligned.timed_chord.label,
+                    "Pred PCs": format_pitch_classes(aligned.timed_chord.chord),
+                    "PC Jaccard": f"{pc_sim:.2f}",
+                    "Section": aligned.tab_chord.section,
+                })
+
+        if low_sim_data:
+            st.dataframe(low_sim_data, use_container_width=True)
+        else:
+            st.write("No low similarity pairs found.")
+
+    # Section breakdown
+    with st.expander("Section Breakdown", expanded=False):
+        section_stats = {}
+        for tc in filtered_tab:
+            if tc.section not in section_stats:
+                section_stats[tc.section] = {"total": 0, "aligned": 0}
+            section_stats[tc.section]["total"] += 1
+
+        for aligned in result.alignments:
+            section = aligned.tab_chord.section
+            if section in section_stats:
+                section_stats[section]["aligned"] += 1
+
+        section_data = []
+        for section, stats in section_stats.items():
+            pct = stats["aligned"] / stats["total"] * 100 if stats["total"] > 0 else 0
+            section_data.append({
+                "Section": section,
+                "Total Chords": stats["total"],
+                "Aligned": stats["aligned"],
+                "Coverage": f"{pct:.0f}%",
+            })
+
+        st.dataframe(section_data, use_container_width=True)
+
+    # Raw chord sequences
+    with st.expander("Raw Chord Sequences", expanded=False):
+        st.write("**Tab Chords:**")
+        st.code(" ".join(tc.label for tc in filtered_tab[:50]) + ("..." if len(filtered_tab) > 50 else ""))
+
+        st.write("**Predicted Chords:**")
+        pred_labels = [tc.label for tc in pred_chords if tc.label != "N"]
+        st.code(" ".join(pred_labels[:50]) + ("..." if len(pred_labels) > 50 else ""))
+
+        if gt_chords:
+            st.write("**Ground Truth Chords:**")
+            gt_labels = [tc.label for tc in gt_chords if tc.label != "N"]
+            st.code(" ".join(gt_labels[:50]) + ("..." if len(gt_labels) > 50 else ""))
 
 
 if __name__ == "__main__":

@@ -7,20 +7,12 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import TYPE_CHECKING
 
-from chord_parser.alignment.aligner import (
-    DistanceFn,
-    align_chords,
-    chord_distance_flexible,
-)
+from chord_parser.alignment.aligner import align_chords
 from chord_parser.alignment.extractor import extract_tab_chords
 from chord_parser.alignment.models import AlignmentResult
 from chord_parser.alignment.smams import parse_chordino_from_smams
 from chord_parser.tab_parser.parser import parse
-
-if TYPE_CHECKING:
-    pass
 
 
 # Pattern to extract YAML frontmatter from markdown
@@ -50,8 +42,8 @@ def align_tab_with_smams(
     smams_path: str | Path,
     tab_path: str | Path,
     *,
-    distance_fn: DistanceFn = chord_distance_flexible,
-    step_pattern: str = "symmetric2",
+    lookahead: int = 5,
+    min_similarity: float = 0.5,
 ) -> AlignmentResult:
     """Align tab sheet chords with chordino annotations from a SMAMS file.
 
@@ -59,7 +51,7 @@ def align_tab_with_smams(
     - Loading and parsing the SMAMS file to extract chordino annotations
     - Loading and parsing the tab markdown file (with optional frontmatter)
     - Extracting chord sequences from both sources
-    - Running DTW alignment with the specified distance function
+    - Running greedy forward alignment
 
     Parameters
     ----------
@@ -68,14 +60,12 @@ def align_tab_with_smams(
     tab_path : str | Path
         Path to the tab markdown file. The file may contain YAML frontmatter
         (between --- delimiters) which will be stripped before parsing.
-    distance_fn : DistanceFn, optional
-        Distance function for chord comparison. Available options:
-        - chord_distance_flexible (default): Tiered matching with
-          0.0 for exact match, 0.2 for same root, 0.4 for bass match, 1.0 otherwise.
-        - chord_distance_exact: Binary matching (0.0 or 1.0).
-        - chord_distance_pitchclass: Jaccard similarity on pitch class sets.
-    step_pattern : str, optional
-        DTW step pattern name. Default is "symmetric2".
+    lookahead : int, optional
+        Number of timed chords to search ahead for each tab chord.
+        Default is 5.
+    min_similarity : float, optional
+        Minimum similarity score (0.0 to 1.0) to accept a match.
+        Default is 0.5.
 
     Returns
     -------
@@ -84,8 +74,8 @@ def align_tab_with_smams(
         - alignments: Matched chord pairs with distances
         - tab_chords: All chords from the tab
         - timed_chords: All chords from chordino
-        - total_distance: Raw DTW distance
-        - normalized_distance: Distance normalized by alignment length
+        - total_distance: Sum of distances for all matches
+        - normalized_distance: Average distance per match
 
     Raises
     ------
@@ -123,8 +113,8 @@ def align_tab_with_smams(
     return align_chords(
         tab_chords=tab_chords,
         timed_chords=timed_chords,
-        step_pattern=step_pattern,
-        distance_fn=distance_fn,
+        lookahead=lookahead,
+        min_similarity=min_similarity,
     )
 
 
@@ -132,8 +122,8 @@ def align_tab_text_with_smams(
     smams_path: str | Path,
     tab_text: str,
     *,
-    distance_fn: DistanceFn = chord_distance_flexible,
-    step_pattern: str = "symmetric2",
+    lookahead: int = 5,
+    min_similarity: float = 0.5,
 ) -> AlignmentResult:
     """Align tab sheet text with chordino annotations from a SMAMS file.
 
@@ -146,10 +136,12 @@ def align_tab_text_with_smams(
         Path to the SMAMS file containing chordino annotations.
     tab_text : str
         Tab sheet content as a string. May contain YAML frontmatter.
-    distance_fn : DistanceFn, optional
-        Distance function for chord comparison. Default is chord_distance_flexible.
-    step_pattern : str, optional
-        DTW step pattern name. Default is "symmetric2".
+    lookahead : int, optional
+        Number of timed chords to search ahead for each tab chord.
+        Default is 5.
+    min_similarity : float, optional
+        Minimum similarity score (0.0 to 1.0) to accept a match.
+        Default is 0.5.
 
     Returns
     -------
@@ -176,6 +168,6 @@ def align_tab_text_with_smams(
     return align_chords(
         tab_chords=tab_chords,
         timed_chords=timed_chords,
-        step_pattern=step_pattern,
-        distance_fn=distance_fn,
+        lookahead=lookahead,
+        min_similarity=min_similarity,
     )

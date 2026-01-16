@@ -1,20 +1,26 @@
 """Chord alignment module for matching tab chords to timed audio annotations.
 
 This module provides functionality to align chords parsed from tab sheets
-with timed chord annotations from audio analysis tools like Chordino,
-Essentia, and madmom.
+with timed chord annotations from audio analysis tools like Chordino.
 """
 
 from chord_parser.alignment.aligner import (
     DistanceFn,
     align_chords,
+    align_with_transposition,
     chord_distance_exact,
     chord_distance_flexible,
-    chord_distance_pitchclass,
-    chord_to_pitch_class_set,
+    chord_similarity,
+    chord_similarity_weighted,
+    compute_alignment_metrics,
 )
 from chord_parser.alignment.api import align_tab_text_with_smams, align_tab_with_smams
 from chord_parser.alignment.chordino import load_chordino_json, parse_chordino_data
+from chord_parser.alignment.evaluation import (
+    EvaluationResult,
+    compare_chord_sequences,
+    evaluate_against_ground_truth,
+)
 from chord_parser.alignment.extractor import extract_tab_chords
 from chord_parser.alignment.models import (
     AlignedChord,
@@ -31,37 +37,23 @@ __all__ = [
     "AlignedChord",
     "AlignmentResult",
     "DistanceFn",
+    "EvaluationResult",
     "TabChord",
     "TimedChord",
     "align_chords",
     "align_tab_text_with_smams",
     "align_tab_with_smams",
+    "align_with_transposition",
     "chord_distance_exact",
     "chord_distance_flexible",
-    "chord_distance_pitchclass",
-    "chord_to_pitch_class_set",
-    "extract_chords_essentia",
-    "extract_chords_madmom",
+    "chord_similarity",
+    "chord_similarity_weighted",
+    "compare_chord_sequences",
+    "compute_alignment_metrics",
+    "evaluate_against_ground_truth",
     "extract_tab_chords",
     "load_chordino_json",
     "parse_chordino_data",
     "parse_chordino_from_smams",
     "parse_chordino_from_smams_dict",
 ]
-
-
-def __getattr__(name: str):
-    """Lazy import for optional audio extractors.
-
-    These require heavy dependencies (essentia, madmom) that are optional.
-    """
-    if name == "extract_chords_essentia":
-        from chord_parser.alignment.essentia_extractor import extract_chords_essentia
-
-        return extract_chords_essentia
-    if name == "extract_chords_madmom":
-        from chord_parser.alignment.madmom_extractor import extract_chords_madmom
-
-        return extract_chords_madmom
-    msg = f"module {__name__!r} has no attribute {name!r}"
-    raise AttributeError(msg)

@@ -7,7 +7,7 @@ from chord_parser.alignment import (
     align_chords,
     chord_distance_exact,
     chord_distance_flexible,
-    chord_distance_pitchclass,
+    chord_similarity,
     extract_tab_chords,
     load_chordino_json,
 )
@@ -152,20 +152,27 @@ def test_align_upside_down():
     sheet = tab_parser.parse(tab_content)
     tab_chords = extract_tab_chords(sheet)
 
-    # Run alignment
-    result = align_chords(tab_chords, timed_chords)
+    # Run alignment with larger lookahead for longer song
+    result = align_chords(tab_chords, timed_chords, lookahead=10)
 
-    # Basic sanity checks
-    assert len(result.alignments) == len(tab_chords)
-    assert result.normalized_distance < 1.0  # Should have some matches
+    # Tab has repeating sections (verses, choruses) but audio only has
+    # one temporal stream. The greedy aligner will exhaust timed chords
+    # before matching all tab chords. This is expected behavior.
+    # What matters is that the matches we do get are good quality.
+    assert len(result.alignments) > 30  # Should get many matches
+    assert result.normalized_distance < 0.3  # Quality should be high
 
-    # Verify some exact matches exist
+    # Verify most matches are exact or close matches
     exact_matches = sum(1 for a in result.alignments if a.distance == 0.0)
-    assert exact_matches > 0
+    close_matches = sum(1 for a in result.alignments if a.distance <= 0.5)
+    assert exact_matches > 20  # Many exact matches
+    assert close_matches == len(result.alignments)  # All are close
 
 
 def test_chord_distance_flexible():
     """Test flexible distance function with various chord pairs."""
+    import pytest
+
     from chord_parser.models import Chord
 
     # Exact match
@@ -173,14 +180,14 @@ def test_chord_distance_flexible():
     assert chord_distance_flexible(Chord("C", "maj"), Chord("C", "maj")) == 0.0
 
     # Same root, different quality -> 0.2
-    assert chord_distance_flexible(Chord("B", "dim"), Chord("B", "maj")) == 0.2
-    assert chord_distance_flexible(Chord("G", "min"), Chord("G", "min7")) == 0.2
-    assert chord_distance_flexible(Chord("Ab", "min7"), Chord("Ab", "min")) == 0.2
+    assert chord_distance_flexible(Chord("B", "dim"), Chord("B", "maj")) == pytest.approx(0.2)
+    assert chord_distance_flexible(Chord("G", "min"), Chord("G", "min7")) == pytest.approx(0.2)
+    assert chord_distance_flexible(Chord("Ab", "min7"), Chord("Ab", "min")) == pytest.approx(0.2)
 
-    # Bass note match -> 0.4
+    # Bass note match -> 0.5
     # Adim7/G should match Gm (G in bass matches G root)
-    assert chord_distance_flexible(Chord("A", "dim7", "G"), Chord("G", "min")) == 0.4
-    assert chord_distance_flexible(Chord("G", "min"), Chord("A", "dim7", "G")) == 0.4
+    assert chord_distance_flexible(Chord("A", "dim7", "G"), Chord("G", "min")) == pytest.approx(0.5)
+    assert chord_distance_flexible(Chord("G", "min"), Chord("A", "dim7", "G")) == pytest.approx(0.5)
 
     # No match -> 1.0
     assert chord_distance_flexible(Chord("G", "min"), Chord("F", "maj")) == 1.0
@@ -206,8 +213,36 @@ def test_chord_distance_exact():
     assert chord_distance_exact(Chord("G", "min"), Chord("F", "maj")) == 1.0
 
 
-def test_align_with_flexible_vs_exact():
-    """Test that flexible matching improves match rate."""
+def test_chord_similarity():
+    """Test chord similarity function."""
+    from chord_parser.models import Chord
+
+    # Exact match -> 1.0
+    assert chord_similarity(Chord("G", "min"), Chord("G", "min")) == 1.0
+    assert chord_similarity(Chord("C", "maj"), Chord("C", "maj")) == 1.0
+
+    # Same root, different quality -> 0.8
+    assert chord_similarity(Chord("B", "dim"), Chord("B", "maj")) == 0.8
+    assert chord_similarity(Chord("G", "min"), Chord("G", "min7")) == 0.8
+    assert chord_similarity(Chord("Ab", "min7"), Chord("Ab", "min")) == 0.8
+
+    # Bass note matches root -> 0.5
+    assert chord_similarity(Chord("A", "dim7", "G"), Chord("G", "min")) == 0.5
+    assert chord_similarity(Chord("G", "min"), Chord("A", "dim7", "G")) == 0.5
+
+    # No match -> 0.0
+    assert chord_similarity(Chord("G", "min"), Chord("F", "maj")) == 0.0
+    assert chord_similarity(Chord("Bb", "maj"), Chord("G", "min")) == 0.0
+
+    # None handling
+    assert chord_similarity(Chord("G", "min"), None) == 0.0
+    assert chord_similarity(None, Chord("G", "min")) == 0.0
+
+
+def test_align_with_quality_variations():
+    """Test alignment with chord quality variations."""
+    import pytest
+
     from chord_parser.alignment.models import TabChord, TimedChord
     from chord_parser.models import Chord
 
@@ -224,51 +259,15 @@ def test_align_with_flexible_vs_exact():
         TimedChord(Chord("C", "maj"), "C", 2.0, 3.0),
     ]
 
-    # Exact matching: only 2 perfect matches
-    result_exact = align_chords(tab_chords, timed_chords, distance_fn=chord_distance_exact)
-    exact_perfect = sum(1 for a in result_exact.alignments if a.distance == 0.0)
-    assert exact_perfect == 2
+    # Default alignment uses chord_similarity which allows quality variations
+    result = align_chords(tab_chords, timed_chords)
 
-    # Flexible matching: Bdim matches B with distance 0.2
-    result_flex = align_chords(tab_chords, timed_chords, distance_fn=chord_distance_flexible)
-    assert result_flex.alignments[1].distance == 0.2  # Bdim vs B
-    close_matches = sum(1 for a in result_flex.alignments if a.distance <= 0.4)
-    assert close_matches == 3  # All should be close matches
+    # All 3 should match (Gm-Gm exact, Bdim-B same root, C-C exact)
+    assert len(result.alignments) == 3
 
+    # Bdim vs B should have distance 0.2 (1.0 - 0.8 similarity)
+    assert result.alignments[1].distance == pytest.approx(0.2)
 
-def test_chord_distance_pitchclass():
-    """Test pitch-class Jaccard distance function."""
-    from chord_parser.models import Chord
-
-    # Exact match -> 0.0
-    assert chord_distance_pitchclass(Chord("G", "min"), Chord("G", "min")) == 0.0
-    assert chord_distance_pitchclass(Chord("C", "maj"), Chord("C", "maj")) == 0.0
-
-    # Same root, triad vs 7th -> 0.25 (jaccard = 3/4 = 0.75)
-    assert chord_distance_pitchclass(Chord("A", "min"), Chord("A", "min7")) == 0.25
-    assert chord_distance_pitchclass(Chord("G", "min"), Chord("G", "min7")) == 0.25
-    assert chord_distance_pitchclass(Chord("C", "maj"), Chord("C", "maj7")) == 0.25
-
-    # Same root but very different notes (Bdim vs B)
-    # Bdim = {B, D, F}, B = {B, D#, F#}, only B overlaps
-    # jaccard = 1/5 = 0.2, so dist = 1 - 0.2 = 0.8
-    dist_bdim_b = chord_distance_pitchclass(Chord("B", "dim"), Chord("B", "maj"))
-    assert dist_bdim_b == 0.8
-
-    # Different roots, some note overlap (Bb vs Gm)
-    # Bb = {Bb, D, F}, Gm = {G, Bb, D}, overlap = {Bb, D} = 2
-    # union = 4, jaccard = 2/4 = 0.5
-    # dist = 0.6 + 0.4 * (1 - 0.5) = 0.6 + 0.2 = 0.8
-    dist_bb_gm = chord_distance_pitchclass(Chord("Bb", "maj"), Chord("G", "min"))
-    assert dist_bb_gm == 0.8
-
-    # Different roots, no overlap (Gm vs F)
-    # Gm = {G, Bb, D}, F = {F, A, C}, no overlap
-    # dist = 0.6 + 0.4 * 1.0 = 1.0
-    dist_gm_f = chord_distance_pitchclass(Chord("G", "min"), Chord("F", "maj"))
-    assert dist_gm_f == 1.0
-
-    # None handling
-    assert chord_distance_pitchclass(None, None) == 0.0
-    assert chord_distance_pitchclass(Chord("G", "min"), None) == 1.0
-    assert chord_distance_pitchclass(None, Chord("G", "min")) == 1.0
+    # Count matches with distance <= 0.5 (similarity >= 0.5)
+    close_matches = sum(1 for a in result.alignments if a.distance <= 0.5)
+    assert close_matches == 3

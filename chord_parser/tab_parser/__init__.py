@@ -19,7 +19,7 @@ from chord_parser.tab_parser.models import (
     Token,
     WordAttachment,
 )
-from chord_parser.tab_parser.parser import parse
+from chord_parser.tab_parser.parser import parse, parse_chords, parse_flat
 
 __all__ = [
     "AttachmentResult",
@@ -35,4 +35,6 @@ __all__ = [
     "Token",
     "WordAttachment",
     "parse",
+    "parse_chords",
+    "parse_flat",
 ]

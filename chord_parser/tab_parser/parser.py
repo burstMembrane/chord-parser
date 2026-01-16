@@ -7,6 +7,10 @@ tab sheet parsing pipeline.
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from chord_parser.models import Chord
 
 from chord_parser.tab_parser.attachment import attach_chords_to_words
 from chord_parser.tab_parser.chord_detector import classify_line, classify_tokens
@@ -259,3 +263,78 @@ def parse(text: str) -> TabSheet:
         sections.append(Section(name=DEFAULT_SECTION, items=()))
 
     return TabSheet(sections=tuple(sections), raw=text)
+
+
+def parse_flat(text: str) -> list[Token]:
+    """Parse a tab sheet into a flat list of tokens.
+
+    Returns all chord and word tokens in order of appearance, without
+    structural information like sections or blocks. Useful for simple
+    chord sequence extraction.
+
+    Parameters
+    ----------
+    text : str
+        The raw tab sheet text.
+
+    Returns
+    -------
+    list[Token]
+        Flat list of tokens (chords and words) in order.
+
+    Examples
+    --------
+    >>> text = '''[Verse]
+    ... Gm     C
+    ... Hello  world
+    ... '''
+    >>> tokens = parse_flat(text)
+    >>> [t.text for t in tokens if t.kind == 'chord']
+    ['Gm', 'C']
+    >>> [t.text for t in tokens if t.kind == 'word']
+    ['Hello', 'world']
+    """
+    lines = preprocess(text)
+    all_tokens: list[Token] = []
+
+    for line in lines:
+        # Skip section headers
+        if extract_section_name(line) is not None:
+            continue
+
+        tokens = tokenize_and_classify(line)
+        # Only include chord and word tokens
+        for token in tokens:
+            if token.kind in ("chord", "word"):
+                all_tokens.append(token)
+
+    return all_tokens
+
+
+def parse_chords(text: str) -> list[Chord]:
+    """Parse a tab sheet and extract all chords as Chord objects.
+
+    Parameters
+    ----------
+    text : str
+        The raw tab sheet text.
+
+    Returns
+    -------
+    list[Chord]
+        List of Chord objects in order of appearance.
+
+    Examples
+    --------
+    >>> text = '''[Verse]
+    ... Gm     C
+    ... Hello  world
+    ... '''
+    >>> chords = parse_chords(text)
+    >>> [c.to_pychord() for c in chords]
+    ['Gm', 'C']
+    """
+    from chord_parser.models import Chord
+
+    tokens = parse_flat(text)
+    return [t.chord for t in tokens if t.kind == "chord" and t.chord is not None]
