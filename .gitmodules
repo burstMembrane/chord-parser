@@ -1,0 +1,3 @@
+[submodule "DECIBEL"]
+	path = DECIBEL
+	url = https://github.com/burstMembrane/DECIBEL.git

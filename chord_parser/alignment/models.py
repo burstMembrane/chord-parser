@@ -27,12 +27,15 @@ class TimedChord:
         Start time in seconds.
     end : float | None
         End time in seconds, or None if last chord.
+    source_index : int | None
+        Index into original tab_chords list, for reliable back-referencing.
     """
 
     chord: Chord | None
     label: str
     start: float
     end: float | None
+    source_index: int | None = None
 
 
 @dataclass(frozen=True)

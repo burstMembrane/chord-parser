@@ -535,8 +535,8 @@ def main() -> None:
         st.code(" ".join(pred_labels[:50]) + ("..." if len(pred_labels) > 50 else ""))
 
         if gt_chords:
-            st.write("**Ground Truth Chords:**")
-            gt_labels = [tc.label for tc in gt_chords if tc.label != "N"]
+            st.write("**Ground Truth Chords (converted to pychord):**")
+            gt_labels = [to_pychord_label(tc.chord, tc.label) for tc in gt_chords if tc.label != "N"]
             st.code(" ".join(gt_labels[:50]) + ("..." if len(gt_labels) > 50 else ""))
 
 
